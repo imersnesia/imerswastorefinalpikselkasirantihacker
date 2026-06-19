@@ -7,7 +7,7 @@
   <meta name="description" content="Gabung jadi seller di iMersWAstore, buka toko online, tampilkan produk, terima pesanan via WhatsApp, dan kelola jualan UMKM dari satu dashboard sederhana." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- SAKLAR SAAS MODE -->
   <script>
@@ -63,11 +63,20 @@
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background: var(--white);
       line-height: 1.6;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .brand, .eyebrow, .offer-pill, .stat strong, .price,
+    .btn, .mini-btn, .login, .feature-card h3, .check-item,
+    .integration-card h3, .logo-pill, .mitra-name, .modal-box h3 {
+      font-family: "Montserrat", sans-serif;
     }
 
     a {
