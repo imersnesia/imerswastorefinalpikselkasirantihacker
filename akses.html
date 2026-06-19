@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akses Produk - iMersWAstore Apps</title>
+  <meta name="description" content="Halaman akses unduhan produk iMersWAstore Apps untuk lisensi Reseller Right." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Poppins"', 'system-ui', 'sans-serif'] },
+          colors: {
+            ink: '#08162f',
+            soft: '#f6f9fd',
+            brand: {
+              blue: '#2563eb',
+              cyan: '#06b6d4',
+              mint: '#7ee6b8',
+              navy: '#08162f',
+              sky: '#dff6ff',
+              green: '#dffcf0'
+            }
+          },
+          boxShadow: {
+            soft: '0 16px 44px rgba(15,44,89,.05)',
+            card: '0 20px 60px rgba(8,22,47,.08)'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    :root {
+      --blue: #2563eb;
+      --cyan: #06b6d4;
+      --mint: #7ee6b8;
+      --navy: #08162f;
+    }
+    body {
+      overflow-x: hidden;
+      background-color: #f8fafc;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Montserrat", sans-serif;
+    }
+    .bg-mesh {
+      background: radial-gradient(circle at 8% 12%, rgba(126,230,184,.42), transparent 25%),
+                  radial-gradient(circle at 85% 5%, rgba(37,99,235,.17), transparent 24%),
+                  radial-gradient(circle at 86% 48%, rgba(6,182,212,.13), transparent 27%),
+                  linear-gradient(180deg, #fbfeff 0%, #f4fbff 55%, #fff 100%);
+    }
+    .gradient-text {
+      background: linear-gradient(110deg, var(--blue), var(--cyan) 52%, #31c48d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .btn-gradient {
+      background: linear-gradient(135deg, var(--blue), var(--cyan) 52%, var(--mint));
+      box-shadow: 0 10px 25px rgba(37,99,235,.2);
+      transition: all 0.3s ease;
+    }
+    .btn-gradient:hover {
+      box-shadow: 0 15px 35px rgba(37,99,235,.3);
+      transform: translateY(-2px);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 44px rgba(15,44,89,.08);
+      border-color: #dbeafe;
+    }
+    .card-gradient {
+      background: radial-gradient(circle at 90% 8%, rgba(126,230,184,.32), transparent 32%),
+                  linear-gradient(135deg, #08162f, #123466 56%, #155e75);
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 antialiased selection:bg-brand-green selection:text-brand-navy bg-mesh min-h-screen flex flex-col items-center py-12 px-4 sm:px-6">
+
+  <!-- HEADER SECTION -->
+  <header class="w-full max-w-3xl text-center flex flex-col items-center mb-10 mt-8 relative z-10">
+      
+      <!-- Logo iMersWAstore -->
+      <img src="https://imersnesia.com/wp-content/uploads/2026/06/logo-teks-imerswastore-1.png" alt="iMersWAstore Logo" class="h-12 w-auto object-contain mb-8">
+      
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 text-[11px] font-bold uppercase tracking-wider mb-5 shadow-sm">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i> Verified Purchase Access
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black gradient-text tracking-tight mb-4">Terima Kasih!</h1>
+      <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
+          Terima kasih sudah menjadi bagian dari <b class="text-brand-navy">Reseller Right Community</b>. Akses pembelian produk <b class="text-emerald-600">iMersWAstore Apps</b> Anda dapat diunduh di bawah ini:
+      </p>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="w-full max-w-3xl space-y-8 relative z-10">
+      
+      <!-- Banner Mockup -->
+      <div class="w-full rounded-[2rem] overflow-hidden border border-slate-200 shadow-soft bg-white p-2">
+          <!-- Lo bisa ganti src img ini dengan banner asli iMersWAstore Reseller Right -->
+          <img src="https://placehold.co/800x350/2563eb/ffffff?text=iMersWAstore+Apps+\nReseller+Right+Access" alt="Banner Produk" class="w-full h-auto object-cover rounded-2xl opacity-90 hover:opacity-100 transition-opacity">
+      </div>
+
+      <!-- SECTION: AKSES FILE PRODUK -->
+      <div class="pt-4">
+          <div class="flex items-center gap-2 text-slate-800 font-black text-sm sm:text-base uppercase tracking-wider mb-5 pl-2">
+              <i data-lucide="folder-down" class="w-5 h-5 text-brand-blue"></i>
+              Akses File Produk
+          </div>
+
+          <div class="space-y-4">
+              <!-- Card 1: Sales Page -->
+              <div class="card-hover bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center border border-indigo-100 shrink-0 shadow-inner">
+                          <i data-lucide="globe-2" class="w-6 h-6 text-indigo-500"></i>
+                      </div>
+                      <div>
+                          <h3 class="font-bold text-slate-800 text-base">Sales Page & Access</h3>
+                          <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Halaman Penawaran Utama (Landing Page Jualan)</p>
+                      </div>
+                  </div>
+                  <a href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-white border-2 border-indigo-100 text-indigo-600 hover:bg-indigo-50 text-xs font-bold rounded-xl transition-all text-center flex justify-center items-center gap-2">
+                      <i data-lucide="download" class="w-4 h-4"></i> Download
+                  </a>
+              </div>
+
+              <!-- Card 2: File Google Sheets -->
+              <div class="card-hover bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center border border-emerald-100 shrink-0 shadow-inner">
+                          <i data-lucide="file-spreadsheet" class="w-6 h-6 text-emerald-500"></i>
+                      </div>
+                      <div>
+                          <h3 class="font-bold text-slate-800 text-base">File Google Sheets</h3>
+                          <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Database & Ledger System / Backend App Script</p>
+                      </div>
+                  </div>
+                  <a href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-white border-2 border-emerald-100 text-emerald-600 hover:bg-emerald-50 text-xs font-bold rounded-xl transition-all text-center flex justify-center items-center gap-2">
+                      <i data-lucide="copy" class="w-4 h-4"></i> Salin File
+                  </a>
+              </div>
+
+              <!-- Card 3: Frontend HTML -->
+              <div class="card-hover bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-2xl bg-cyan-50 flex items-center justify-center border border-cyan-100 shrink-0 shadow-inner">
+                          <i data-lucide="code-2" class="w-6 h-6 text-cyan-500"></i>
+                      </div>
+                      <div>
+                          <h3 class="font-bold text-slate-800 text-base">Frontend HTML Web Apps</h3>
+                          <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">File HTML untuk Toko, Dashboard, dan Login</p>
+                      </div>
+                  </div>
+                  <a href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-white border-2 border-cyan-100 text-cyan-600 hover:bg-cyan-50 text-xs font-bold rounded-xl transition-all text-center flex justify-center items-center gap-2">
+                      <i data-lucide="download" class="w-4 h-4"></i> Download
+                  </a>
+              </div>
+
+              <!-- Card 4: Tutorial Setup -->
+              <div class="card-hover bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center border border-amber-100 shrink-0 shadow-inner">
+                          <i data-lucide="play-square" class="w-6 h-6 text-amber-500"></i>
+                      </div>
+                      <div>
+                          <h3 class="font-bold text-slate-800 text-base">Tutorial Setup Lengkap</h3>
+                          <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Video Panduan Instalasi dari A sampai Z</p>
+                      </div>
+                  </div>
+                  <a href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-amber-500 text-white hover:bg-amber-600 text-xs font-bold rounded-xl transition-all shadow-md text-center flex justify-center items-center gap-2">
+                      <i data-lucide="youtube" class="w-4 h-4"></i> Tonton Video
+                  </a>
+              </div>
+
+              <!-- Card 5: Bonus Premium -->
+              <div class="card-hover bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-2xl bg-fuchsia-50 flex items-center justify-center border border-fuchsia-100 shrink-0 shadow-inner">
+                          <i data-lucide="flame" class="w-6 h-6 text-fuchsia-500"></i>
+                      </div>
+                      <div>
+                          <h3 class="font-bold text-slate-800 text-base">Bonus Spesial Pembelian</h3>
+                          <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Materi Tambahan & Tools Ekstra</p>
+                      </div>
+                  </div>
+                  <a href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-fuchsia-500 text-white hover:bg-fuchsia-600 text-xs font-bold rounded-xl transition-all shadow-md text-center flex justify-center items-center gap-2">
+                      <i data-lucide="gift" class="w-4 h-4"></i> Akses Bonus
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      <!-- SECTION: LISENSI RULES (BARU DITAMBAHKAN & DIUPDATE) -->
+      <div class="bg-indigo-50/60 rounded-3xl p-6 sm:p-8 border border-indigo-200 relative overflow-hidden shadow-sm mt-8">
+          <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10">
+              <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-wider mb-3">
+                  <i data-lucide="shield-check" class="w-5 h-5"></i> Aturan Lisensi (Reseller Right)
+              </div>
+              <h3 class="font-black text-slate-800 text-lg sm:text-xl mb-5">Wajib Dipatuhi Oleh Semua Reseller:</h3>
+              <ul class="space-y-4">
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"></i>
+                      <span><b>Jual Kembali</b> dengan harga minimal <b>Rp 69.000</b>.</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"></i>
+                      <span>Bisa digunakan sebagai <b>Jasa Instal / Setup</b> dengan harga minimal sama dengan harga jual Reseller Right.</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"></i>
+                      <span>Boleh dijadikan <b>Bonus Affiliate</b> dengan ketentuan komisi sesuai dengan patokan harga minimal.</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-500 shrink-0 mt-0.5"></i>
+                      <span><b>Hak Setara:</b> Anda dan Pembeli Anda mempunyai hak yang sama atas lisensi ini, dan begitu seterusnya (Unlimited Resell).</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                      <span><b>Bebas Modifikasi:</b> Diperbolehkan mengganti, mengedit, atau merombak desain <b>Sales Page</b> dan <b>Akses Page</b> sesuai kreativitas dan kebutuhan jualan Anda.</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="x-circle" class="w-5 h-5 text-red-500 shrink-0 mt-0.5"></i>
+                      <span><b>Dilarang Keras:</b> Mengganti, menimpa, atau menghilangkan identitas brand <b>iMersWAstore Apps</b> pada sistem aplikasi utama.</span>
+                  </li>
+                  <li class="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                      <i data-lucide="x-circle" class="w-5 h-5 text-red-500 shrink-0 mt-0.5"></i>
+                      <span><b>Dilarang Keras:</b> Membagikan source code atau akses ke dalam produk ini secara <b>Gratis</b> (sebagai *lead magnet* atau *giveaway*) dalam bentuk apapun.</span>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+      <!-- SECTION: KOMUNITAS & DISKUSI -->
+      <div class="card-gradient rounded-3xl p-8 relative overflow-hidden shadow-card text-white mt-8">
+          <!-- Dekorasi BG Glow -->
+          <div class="absolute -right-20 -top-20 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 text-center sm:text-left">
+              <div class="inline-flex items-center gap-2 text-brand-mint font-bold text-xs uppercase tracking-wider mb-4 px-3 py-1.5 bg-white/10 rounded-full border border-white/10">
+                  <i data-lucide="message-circle" class="w-4 h-4"></i> Komunitas & Diskusi
+              </div>
+              <h3 class="font-black text-2xl sm:text-3xl mb-3">Grup Support VIP iMersWAstore</h3>
+              <p class="text-sm text-slate-300 leading-relaxed mb-8 max-w-xl">
+                  Wajib gabung! Ini adalah grup WhatsApp khusus untuk semua pembeli lisensi iMersWAstore Apps. Dapatkan info update, diskusi seputar instalasi, dan tanya jawab langsung dengan developer dan member lain.
+              </p>
+              <a href="#" target="_blank" class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-white text-brand-navy hover:bg-slate-50 text-sm font-black rounded-xl shadow-lg transition-all transform hover:-translate-y-1 gap-2">
+                  <i data-lucide="smartphone" class="w-5 h-5 text-emerald-500"></i> Join Grup Support WhatsApp
+              </a>
+          </div>
+      </div>
+
+      <!-- SECTION: MEMBERSHIP -->
+      <div class="bg-amber-50 rounded-3xl p-8 border border-amber-200 relative overflow-hidden shadow-sm mt-8">
+          <div class="relative z-10 text-center sm:text-left flex flex-col sm:flex-row items-center gap-6">
+              <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0 border border-amber-200 shadow-sm text-amber-500">
+                  <i data-lucide="crown" class="w-8 h-8"></i>
+              </div>
+              <div class="flex-1">
+                  <h3 class="font-black text-slate-800 text-lg sm:text-xl mb-1">Belum Punya Membership?</h3>
+                  <p class="text-sm text-slate-600 leading-relaxed mb-4 sm:mb-0">
+                      Khusus Anda yang belum memiliki akun membership system iMersWAstore, silakan chat admin agar segera dibuatkan aksesnya.
+                  </p>
+              </div>
+              <a href="#" target="_blank" class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3.5 bg-amber-500 text-white hover:bg-amber-600 text-sm font-bold rounded-xl shadow-md transition-all gap-2 shrink-0">
+                  <i data-lucide="message-square" class="w-4 h-4"></i> Chat WhatsApp
+              </a>
+          </div>
+      </div>
+
+  </main>
+
+  <!-- FOOTER SECTION -->
+  <footer class="w-full max-w-3xl mt-16 pt-8 border-t border-slate-200 text-center space-y-6 relative z-10">
+      <div>
+          <h4 class="font-bold text-slate-800 text-base mb-2">Siap Mulai Action?</h4>
+          <p class="text-sm text-slate-500 leading-relaxed mb-4 max-w-lg mx-auto">
+              Semoga <b>iMersWAstore Apps</b> bisa jadi langkah awal Anda membangun dan mengelola ekosistem SaaS & Toko Online UMKM dengan cara yang lebih simpel, ringan, dan langsung menghasilkan.
+          </p>
+          <p class="text-xs text-emerald-600 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full border border-emerald-100">Terima kasih sudah menjadi bagian dari ekosistem ini 🚀</p>
+      </div>
+
+      <div class="pt-6 pb-8">
+          <p class="font-black gradient-text text-base inline-block">Terry Katar</p>
+          <p class="text-xs text-slate-400 mt-1">iMersFireship Developer</p>
+      </div>
+  </footer>
+
+  <script>
+      // Inisialisasi ikon
+      lucide.createIcons();
+  </script>
+</body>
+</html>
