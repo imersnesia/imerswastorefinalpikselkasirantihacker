@@ -1002,6 +1002,12 @@
       margin-bottom: 24px;
     }
 
+    .integration-card .eyebrow {
+      color: #dffcf0;
+      background: rgba(126, 230, 184, .14);
+      border-color: rgba(126, 230, 184, .28);
+    }
+
     .logo-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1018,6 +1024,14 @@
       font-weight: 900;
       background: rgba(255, 255, 255, .08);
       border: 1px solid rgba(255, 255, 255, .14);
+      transition: .25s ease;
+    }
+
+    .logo-pill:hover {
+      transform: translateY(-3px);
+      color: #08162f;
+      background: linear-gradient(135deg, #dffcf0, #9ddcff);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
     }
 
     .check-grid {
@@ -1996,10 +2010,12 @@
         <div class="integration-card reveal">
           <span class="eyebrow">Order WhatsApp</span>
           <h3>Order Masuk Langsung ke WhatsApp Seller</h3>
-          <p>Setiap pesanan bisa diarahkan ke WhatsApp toko Anda. Untuk kebutuhan lanjutan, integrasi Fonnte dan WaPlus tersedia agar follow up pelanggan lebih praktis.</p>
+          <p>Setiap pesanan dari toko bisa diarahkan ke WhatsApp seller. Untuk kebutuhan notifikasi dan proses order yang lebih rapi, iMersWAstore mendukung integrasi beberapa WhatsApp Gateway.</p>
           <div class="logo-row">
-            <div class="logo-pill">Fonnte</div>
-            <div class="logo-pill">WaPlus</div>
+            <a class="logo-pill" href="#" target="_blank" rel="noopener noreferrer">Fonnte</a>
+            <a class="logo-pill" href="#" target="_blank" rel="noopener noreferrer">WaPlus</a>
+            <a class="logo-pill" href="#" target="_blank" rel="noopener noreferrer">StarSender</a>
+            <a class="logo-pill" href="#" target="_blank" rel="noopener noreferrer">XSender</a>
           </div>
         </div>
 
@@ -2008,9 +2024,9 @@
           <div class="check-item"><span class="check-badge">✓</span>Konfirmasi Pembayaran</div>
           <div class="check-item"><span class="check-badge">✓</span>Invoice Otomatis</div>
           <div class="check-item"><span class="check-badge">✓</span>Update Status Pesanan</div>
-          <div class="check-item"><span class="check-badge">✓</span>Follow Up Pelanggan</div>
-          <div class="check-item"><span class="check-badge">✓</span>Broadcast Promo</div>
-          <div class="check-item"><span class="check-badge">✓</span>Pesan Pengingat</div>
+          <div class="check-item"><span class="check-badge">✓</span>Checkout ke WhatsApp Seller</div>
+          <div class="check-item"><span class="check-badge">✓</span>Data Order Masuk Dashboard</div>
+          <div class="check-item"><span class="check-badge">✓</span>Integrasi Multi Gateway</div>
           <div class="check-item"><span class="check-badge">✓</span>Langsung melalui WhatsApp</div>
         </div>
       </div>
@@ -2150,7 +2166,7 @@
               <li>Etalase Toko Aktif</li>
               <li>Kelola Produk & Stok</li>
               <li>POS Kasir Modern</li>
-              <li>Integrasi Fonnte / WaPlus</li>
+              <li>Integrasi Fonnte / WaPlus / StarSender / XSender</li>
               <li>Support Prioritas</li>
               <li>Laporan Penjualan Lengkap</li>
             </ul>
@@ -2219,8 +2235,8 @@
             <p>Ya, POS Kasir tersedia untuk seller yang juga punya toko fisik dan ingin mencatat transaksi offline.</p>
           </details>
           <details>
-            <summary>Apakah wajib menggunakan Fonnte atau WaPlus?</summary>
-            <p>Tidak wajib. Pesanan tetap bisa diarahkan ke WhatsApp seller, sedangkan integrasi Fonnte atau WaPlus tersedia untuk kebutuhan otomatisasi lanjutan.</p>
+            <summary>Apakah wajib menggunakan WhatsApp Gateway?</summary>
+            <p>Tidak wajib. Pesanan tetap bisa diarahkan ke WhatsApp seller. Integrasi Fonnte, WaPlus, StarSender, dan XSender tersedia untuk kebutuhan notifikasi serta proses order yang lebih rapi.</p>
           </details>
           <details>
             <summary>Apakah ada biaya bulanan?</summary>
@@ -2240,7 +2256,7 @@
         <h2>Jangan Hanya Bergantung Pada Marketplace</h2>
         <p>
           Miliki toko online sendiri, kelola pelanggan sendiri, dan jalankan jualan online serta offline
-          dalam satu sistem. iMersWAstore adalah toko online, POS Kasir, dan WhatsApp Automation untuk UMKM Indonesia.
+          dalam satu sistem. iMersWAstore adalah toko online, POS Kasir, dan WhatsApp Order untuk UMKM Indonesia.
         </p>
         <a href="#" onclick="openModal(event)" class="btn btn-primary">Daftar Jadi Seller →</a>
       </div>
