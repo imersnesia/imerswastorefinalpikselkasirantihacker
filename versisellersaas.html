@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iMersWAstore — Buka Toko Online, POS Kasir & Jualan via WhatsApp</title>
-  <meta name="description" content="Gabung jadi seller di iMersWAstore, buka toko online, gunakan POS Kasir untuk toko fisik, terima pesanan via WhatsApp, dan kelola jualan UMKM dari satu dashboard sederhana." />
+  <title>iMersWAstore — Buka Toko Online & Jualan via WhatsApp</title>
+  <meta name="description" content="Gabung jadi seller di iMersWAstore, buka toko online, tampilkan produk, terima pesanan via WhatsApp, dan kelola jualan UMKM dari satu dashboard sederhana." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -265,6 +265,61 @@
       color: var(--ink);
       font-size: 24px;
       cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      padding: 18px 20px 22px;
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(230, 237, 247, .75);
+      border-bottom: 1px solid rgba(230, 237, 247, .9);
+      box-shadow: 0 18px 45px rgba(15, 44, 89, .10);
+      z-index: 49;
+    }
+
+    .mobile-menu.is-open {
+      display: block;
+    }
+
+    .mobile-nav {
+      width: min(var(--container), calc(100% - 28px));
+      margin-inline: auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .mobile-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      color: var(--navy);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      font-family: "Montserrat", sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+
+    .mobile-nav a:hover {
+      transform: translateY(-2px);
+      border-color: rgba(37, 99, 235, .25);
+      box-shadow: 0 10px 25px rgba(15, 44, 89, .06);
+    }
+
+    .mobile-nav a.mobile-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #24c6dc, #6ee7b7);
+      border-color: transparent;
+      box-shadow: 0 14px 35px rgba(37, 99, 235, .20);
     }
 
     .hero {
@@ -1783,7 +1838,19 @@
         <a class="mini-btn" href="#" onclick="openModal(event)">Daftar Seller</a>
       </div>
 
-      <button class="mobile-toggle" aria-label="Buka menu">☰</button>
+      <button class="mobile-toggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu">
+      <nav class="mobile-nav" aria-label="Navigasi mobile">
+        <a href="#fitur">Fitur</a>
+        <a href="#mitra">Mitra</a>
+        <a href="#pos">POS Kasir</a>
+        <a href="#harga">Paket Seller</a>
+        <a href="#faq">FAQ</a>
+        <a href="login.html">Masuk Seller</a>
+        <a href="#" onclick="openModal(event)" class="mobile-primary">Daftar Seller</a>
+      </nav>
     </div>
   </header>
 
@@ -2355,6 +2422,28 @@
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     window.addEventListener('scroll', handleScroll);
     handleScroll();
+
+    // ==========================================
+    // LOGIKA BURGER MENU MOBILE
+    // ==========================================
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('is-open');
+            mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            mobileToggle.textContent = isOpen ? '×' : '☰';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('is-open');
+                mobileToggle.setAttribute('aria-expanded', 'false');
+                mobileToggle.textContent = '☰';
+            });
+        });
+    }
 
     // ==========================================
     // LOGIKA MODAL PENDAFTARAN
