@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iMersWAstore — Toko Online, POS Kasir & WhatsApp Automation</title>
+  <meta name="description" content="Bangun toko online profesional, kelola POS kasir, dan otomatisasi WhatsApp dalam satu platform mudah untuk UMKM Indonesia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- SAKLAR SAAS MODE -->
+  <script>
+    // URL DEPLOY TERBARU LO SUDAH DIPASANG DI SINI BOS!
+    const SETTING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5b-MqpGYCHgQzQtQrf2lIOoWs71CAARJBnRL4ALiJwxI5jbkNJ680zzXgv-KWWRES/exec';
+    
+    let fdSettings = new FormData();
+    fdSettings.append('action', 'get_app_settings');
+    
+    // Mengecek apakah landing page ini diizinkan tampil oleh Admin
+    fetch(SETTING_SCRIPT_URL, { method: 'POST', body: fdSettings })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success && res.data && res.data.show_landing_page === 'off') {
+                // Jika dimatikan, paksa tendang pengunjung ke halaman login
+                window.location.replace('login.html');
+            }
+        })
+        .catch(err => console.log("Gagal memuat konfigurasi awal", err));
+  </script>
+
+  <style>
+    :root {
+      --navy: #08162f;
+      --ink: #13213c;
+      --muted: #65728a;
+      --line: #e6edf7;
+      --white: #ffffff;
+      --soft: #f6f9fd;
+      --blue: #2563eb;
+      --cyan: #22d3ee;
+      --mint: #7ee6b8;
+      --mint-soft: #dffcf0;
+      --green-soft: #bdf4d4;
+      --lavender: #e9e7ff;
+      --warning: #fff3d6;
+      --shadow: 0 24px 70px rgba(15, 44, 89, .14);
+      --shadow-soft: 0 14px 40px rgba(15, 44, 89, .09);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --container: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: #0f4b79;
+      background: linear-gradient(135deg, rgba(126, 230, 184, .35), rgba(34, 211, 238, .18));
+      border: 1px solid rgba(37, 99, 235, .1);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .01em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(100deg, var(--blue), #00a6d6 45%, #31c48d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 15px;
+      transition: .25s ease;
+      cursor: pointer;
+      border: 0;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #06b6d4 52%, #53d38d);
+      box-shadow: 0 14px 35px rgba(37, 99, 235, .28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 44px rgba(37, 99, 235, .36);
+    }
+
+    .btn-secondary {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .82);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(15, 44, 89, .06);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, .25);
+    }
+
+    .topbar {
+      width: 100%;
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 50;
+      padding: 18px 0;
+      transition: .25s ease;
+    }
+
+    .topbar.is-scrolled {
+      background: rgba(255, 255, 255, .82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(230, 237, 247, .75);
+      padding: 12px 0;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -.03em;
+      font-size: 22px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #17c6c7, #7ee6b8);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, .24);
+    }
+
+    .brand-mark svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: #3e4b63;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-actions .login {
+      color: #3e4b63;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 10px 16px;
+    }
+    
+    .nav-actions .login:hover {
+      color: var(--blue);
+    }
+
+    .nav-actions .mini-btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), #24c6dc, #6ee7b7);
+      font-size: 13px;
+      transition: transform 0.2s;
+    }
+    .nav-actions .mini-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 860px;
+      padding: 172px 0 90px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 8% 20%, rgba(126, 230, 184, .46), transparent 28%),
+        radial-gradient(circle at 88% 4%, rgba(37, 99, 235, .20), transparent 25%),
+        radial-gradient(circle at 82% 34%, rgba(189, 244, 212, .38), transparent 22%),
+        linear-gradient(180deg, #fbfeff 0%, #f4fbff 56%, #ffffff 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(37, 99, 235, .12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, transparent, black 18%, transparent 82%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      align-items: center;
+      gap: 72px;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      max-width: 680px;
+      color: var(--navy);
+      font-size: clamp(43px, 6vw, 76px);
+      line-height: .95;
+      letter-spacing: -.07em;
+      margin-top: 22px;
+      margin-bottom: 26px;
+    }
+
+    .hero p.lead {
+      max-width: 610px;
+      color: #4a5870;
+      font-size: 19px;
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .hero-offers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 26px 0 30px;
+    }
+
+    .offer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(37, 99, 235, .12);
+      color: #23324b;
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 10px 28px rgba(15, 44, 89, .07);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .trust {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      margin-left: -7px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      border: 2px solid #fff;
+      font-size: 11px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), #49d7ae);
+    }
+
+    .avatar:first-child {
+      margin-left: 0;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 520px;
+    }
+
+    .dashboard-card {
+      position: relative;
+      width: min(100%, 570px);
+      margin-left: auto;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(255, 255, 255, .7);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    .browser-dots {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 18px;
+      border-bottom: 1px solid #eff4fb;
+      color: #92a0b5;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 99px;
+    }
+
+    .dot.red { background: #ff7a8a; }
+    .dot.yellow { background: #ffd36d; }
+    .dot.green { background: #65e6aa; }
+
+    .dash-body {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      min-height: 340px;
+    }
+
+    .sidebar {
+      padding: 24px 18px;
+      background: linear-gradient(180deg, #f8fbff, #eef8ff);
+      border-right: 1px solid #e9eff8;
+    }
+
+    .menu-label {
+      color: #8a97aa;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .side-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      color: #536079;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .side-item.active {
+      color: #095b91;
+      background: linear-gradient(135deg, rgba(126, 230, 184, .28), rgba(34, 211, 238, .17));
+    }
+
+    .side-icon {
+      width: 17px;
+      height: 17px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, var(--blue), #61dba5);
+      opacity: .75;
+    }
+
+    .dash-main {
+      padding: 28px;
+    }
+
+    .dash-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .dash-head h3 {
+      font-size: 18px;
+      color: var(--navy);
+      letter-spacing: -.03em;
+    }
+
+    .dash-head span {
+      display: block;
+      color: #7d8ca2;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .mini-avatar {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #26618c;
+      background: #eaf9ff;
+      font-weight: 900;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      border: 1px solid #edf2f8;
+      border-radius: 18px;
+      padding: 15px;
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(15, 44, 89, .04);
+    }
+
+    .metric small {
+      display: block;
+      color: #718095;
+      font-weight: 800;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .metric strong {
+      color: var(--navy);
+      font-size: 22px;
+      letter-spacing: -.04em;
+    }
+
+    .chart {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid #edf2f8;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+    }
+
+    .chart-title {
+      color: #546177;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .bars {
+      height: 112px;
+      display: flex;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 8px 8px 4px 4px;
+      background: linear-gradient(180deg, #2563eb, #22d3ee 55%, #8ef0c1);
+      opacity: .9;
+    }
+
+    .float-order,
+    .float-pos {
+      position: absolute;
+      z-index: 3;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .float-order {
+      right: -26px;
+      top: 120px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+    }
+
+    .check {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #095b91;
+      background: linear-gradient(135deg, #dffcf0, #d9f0ff);
+      font-weight: 900;
+    }
+
+    .float-order strong,
+    .float-pos strong {
+      display: block;
+      color: var(--navy);
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .float-order span,
+    .float-pos span {
+      color: #6b788f;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .float-pos {
+      left: -30px;
+      bottom: 42px;
+      width: 250px;
+      padding: 18px;
+    }
+
+    .cart-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #516077;
+      margin-top: 12px;
+    }
+
+    .cart-total {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px dashed #d9e4f2;
+      display: flex;
+      justify-content: space-between;
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    .stats {
+      padding: 32px 0;
+      background: #fff;
+      border-top: 1px solid #eff4f8;
+      border-bottom: 1px solid #eff4f8;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      text-align: center;
+    }
+
+    .stat {
+      padding: 14px 8px;
+      border-right: 1px solid #eef3f8;
+    }
+
+    .stat:last-child {
+      border-right: 0;
+    }
+
+    .stat strong {
+      display: block;
+      color: #0f8ed8;
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-inline: auto;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-head h2 {
+      color: var(--navy);
+      font-size: clamp(32px, 4vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    /* KONEKSI MITRA CSS */
+    .mitra-section {
+      background: #fff;
+      border-bottom: 1px solid #eff4f8;
+    }
+
+    .mitra-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .mitra-card {
+      background: var(--soft);
+      border: 1px solid #edf2f8;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      transition: .25s ease;
+      box-shadow: 0 10px 25px rgba(15, 44, 89, .03);
+    }
+
+    .mitra-card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 14px 35px rgba(15, 44, 89, .08); 
+      border-color: #dbeafe;
+    }
+
+    .mitra-logo {
+      width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #22d3ee); color: #fff;
+      display: grid; place-items: center; font-size: 24px; font-weight: 900;
+      overflow: hidden; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .mitra-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .mitra-name { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mitra-badge { color: #059669; font-size: 12px; font-weight: 700; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 4px; background: #d1fae5; padding: 4px 10px; border-radius: 99px; }
+    .mitra-link { display: block; padding: 10px; border-radius: 12px; background: #fff; color: var(--blue); font-weight: 800; font-size: 14px; transition: .2s; border: 1px solid #dce4ef;}
+    .mitra-link:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .features {
+      background: var(--soft);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      min-height: 230px;
+      padding: 30px;
+      border-radius: var(--radius-lg);
+      background: #fff;
+      border: 1px solid #edf2f8;
+      box-shadow: 0 12px 38px rgba(15, 44, 89, .05);
+      transition: .25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(15, 44, 89, .09);
+    }
+
+    .icon-box {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      margin-bottom: 22px;
+      font-size: 22px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, .12), rgba(126, 230, 184, .30));
+    }
+
+    .feature-card h3 {
+      color: var(--navy);
+      font-size: 20px;
+      letter-spacing: -.035em;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .wide-card {
+      grid-column: span 2;
+      color: #dcecff;
+      background:
+        radial-gradient(circle at 86% 10%, rgba(126, 230, 184, .30), transparent 30%),
+        linear-gradient(135deg, #08162f, #123466 55%, #155e75);
+      border: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wide-card h3 {
+      color: #fff;
+    }
+
+    .wide-card p {
+      color: #c7d7ee;
+      max-width: 620px;
+    }
+
+    .wide-card .tag {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(126, 230, 184, .15);
+      color: #aaf4d0;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      border: 1px solid rgba(126, 230, 184, .22);
+    }
+
+    .pos-mini {
+      margin-top: 24px;
+      max-width: 510px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .pos-mini .pay {
+      margin-top: 14px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #06324f;
+      font-size: 13px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #bdf4d4, #9ddcff);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: .94fr 1.06fr;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .copy-block h2 {
+      color: var(--navy);
+      font-size: clamp(33px, 4.2vw, 54px);
+      line-height: 1.06;
+      letter-spacing: -.06em;
+      margin: 18px 0;
+    }
+
+    .copy-block p {
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 16px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 30px rgba(15, 44, 89, .05);
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #1fc9cb);
+      flex: 0 0 auto;
+    }
+
+    .phone-mockup {
+      max-width: 440px;
+      margin-left: auto;
+      padding: 16px;
+      border-radius: 38px;
+      background: linear-gradient(145deg, #10264d, #07142c);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .phone-screen {
+      border-radius: 28px;
+      background: #f8fbff;
+      overflow: hidden;
+      min-height: 610px;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .phone-top {
+      padding: 24px 22px 18px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, .9), rgba(34, 211, 238, .82), rgba(126, 230, 184, .78));
+      color: #fff;
+    }
+
+    .phone-top small {
+      font-weight: 800;
+      opacity: .86;
+    }
+
+    .phone-top h3 {
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: -.04em;
+      margin-top: 7px;
+    }
+
+    .product-list {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .product-item {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #edf2f8;
+      border-radius: 18px;
+    }
+
+    .product-img {
+      height: 72px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, .8), transparent 20%),
+        linear-gradient(135deg, #dbeafe, #bdf4d4);
+    }
+
+    .product-item strong {
+      display: block;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .product-item span {
+      color: #0d8dca;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .checkout-bar {
+      margin: 4px 18px 18px;
+      height: 50px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #21c4cf);
+      font-weight: 900;
+    }
+
+    .automation {
+      background:
+        radial-gradient(circle at 10% 24%, rgba(126, 230, 184, .35), transparent 26%),
+        radial-gradient(circle at 90% 20%, rgba(37, 99, 235, .16), transparent 27%),
+        #fff;
+    }
+
+    .automation-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .integration-card {
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      background: linear-gradient(135deg, #08162f, #123466);
+      color: #fff;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 110px;
+    }
+
+    .integration-card h3 {
+      font-size: 32px;
+      letter-spacing: -.05em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .integration-card p {
+      color: #c9d8ed;
+      margin-bottom: 24px;
+    }
+
+    .logo-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .logo-pill {
+      min-height: 88px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: #e9fbff;
+      font-size: 22px;
+      font-weight: 900;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .14);
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid #edf2f8;
+      box-shadow: 0 12px 35px rgba(15, 44, 89, .05);
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .check-badge {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      color: #0e5b91;
+      background: linear-gradient(135deg, #dffcf0, #dbeafe);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .pos-section {
+      background: var(--soft);
+    }
+
+    .pos-panel {
+      padding: 42px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .94), rgba(255, 255, 255, .72)),
+        radial-gradient(circle at 10% 10%, rgba(126, 230, 184, .32), transparent 32%),
+        radial-gradient(circle at 90% 20%, rgba(37, 99, 235, .18), transparent 28%);
+      border: 1px solid rgba(230, 237, 247, .9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .pos-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .pos-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .pos-list li,
+    .simple-list li {
+      list-style: none;
+    }
+
+    .pos-list li {
+      padding: 14px 14px;
+      border-radius: 15px;
+      background: #fff;
+      border: 1px solid #edf2f8;
+      color: #37445d;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .terminal {
+      border-radius: 28px;
+      overflow: hidden;
+      background: #07142c;
+      color: #eaf6ff;
+      box-shadow: var(--shadow);
+    }
+
+    .terminal-head {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .terminal-head strong {
+      font-size: 16px;
+    }
+
+    .terminal-body {
+      padding: 20px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      color: #bfcee2;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .receipt-total {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, .28), rgba(126, 230, 184, .18));
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-weight: 900;
+      font-size: 20px;
+    }
+
+    .pay-btn {
+      margin-top: 14px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      color: #06192e;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #dffcf0, #94d8ff);
+      font-weight: 900;
+    }
+
+    .products {
+      background: #fff;
+    }
+
+    .mini-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .mini-feature {
+      padding: 22px;
+      border-radius: 20px;
+      background: var(--soft);
+      border: 1px solid #edf2f8;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .audience {
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f6f9fd 100%);
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+
+    .audience-card {
+      padding: 20px 14px;
+      text-align: center;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid #edf2f8;
+      box-shadow: 0 10px 28px rgba(15, 44, 89, .04);
+      font-weight: 900;
+      color: #26344e;
+      transition: .2s ease;
+    }
+
+    .audience-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .audience-card span {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .umkm-program {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(126, 230, 184, .36), transparent 30%),
+        radial-gradient(circle at 80% 60%, rgba(37, 99, 235, .14), transparent 32%),
+        #08162f;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .program-card {
+      width: min(900px, 100%);
+      margin: auto;
+      padding: 54px;
+      text-align: center;
+      border-radius: 36px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .13);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .2);
+      backdrop-filter: blur(16px);
+    }
+
+    .program-card h2 {
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: -.07em;
+      line-height: .98;
+      margin: 16px 0;
+    }
+
+    .program-card p {
+      color: #c7d7ee;
+      font-size: 18px;
+      max-width: 620px;
+      margin: 0 auto 28px;
+    }
+
+    .pricing {
+      background: #fff;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      position: relative;
+      padding: 34px;
+      border-radius: 28px;
+      background: #fff;
+      border: 1px solid #dfe8f5;
+      box-shadow: 0 14px 38px rgba(15, 44, 89, .06);
+      display: flex;
+      flex-direction: column;
+      min-height: 560px;
+    }
+
+    .price-card.featured {
+      color: #fff;
+      background:
+        radial-gradient(circle at 90% 5%, rgba(126, 230, 184, .36), transparent 32%),
+        linear-gradient(135deg, #1555d5, #0693d6 48%, #34c68b);
+      border: 0;
+      transform: translateY(-18px);
+      box-shadow: 0 28px 80px rgba(37, 99, 235, .27);
+    }
+
+    .popular {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: #dffcf0;
+      color: #0f4b79;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+
+    .price-card h3 {
+      color: var(--navy);
+      font-size: 24px;
+      letter-spacing: -.04em;
+      margin-bottom: 8px;
+    }
+
+    .price-card.featured h3 {
+      color: #fff;
+    }
+
+    .price-desc {
+      color: var(--muted);
+      min-height: 52px;
+      margin-bottom: 22px;
+    }
+
+    .price-card.featured .price-desc {
+      color: rgba(255, 255, 255, .82);
+    }
+
+    .price {
+      color: var(--navy);
+      font-size: 44px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -.07em;
+      margin-bottom: 26px;
+    }
+
+    .price span {
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 0;
+      font-weight: 800;
+    }
+
+    .price-card.featured .price,
+    .price-card.featured .price span {
+      color: #fff;
+    }
+
+    .simple-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .simple-list li {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      color: #34435c;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .price-card.featured .simple-list li {
+      color: rgba(255, 255, 255, .92);
+    }
+
+    .simple-list li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      color: #0e5b91;
+      background: linear-gradient(135deg, #dffcf0, #dbeafe);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .price-card.featured .simple-list li::before {
+      background: rgba(255, 255, 255, .2);
+      color: #fff;
+    }
+
+    .price-card .btn {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .why {
+      background:
+        radial-gradient(circle at 0% 20%, rgba(126, 230, 184, .26), transparent 24%),
+        var(--soft);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .why-card {
+      padding: 38px;
+      border-radius: 34px;
+      color: #fff;
+      background: linear-gradient(135deg, #08162f, #173f75);
+      box-shadow: var(--shadow);
+    }
+
+    .why-card h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -.06em;
+      margin-bottom: 18px;
+    }
+
+    .why-card p {
+      color: #c7d7ee;
+      font-size: 17px;
+    }
+
+    .why-points {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .faq {
+      background: #fff;
+    }
+
+    .faq-list {
+      max-width: 900px;
+      margin: auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    details {
+      border-radius: 20px;
+      border: 1px solid #e1e9f5;
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(15, 44, 89, .04);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 22px 24px;
+      color: var(--navy);
+      font-weight: 900;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      font-size: 24px;
+      line-height: 1;
+      color: #168dcc;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      color: var(--muted);
+      padding: 0 24px 24px;
+    }
+
+    .cta {
+      padding: 120px 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(126, 230, 184, .35), transparent 32%),
+        radial-gradient(circle at 20% 90%, rgba(37, 99, 235, .24), transparent 30%),
+        linear-gradient(135deg, #08162f, #102d5d);
+      color: #fff;
+      text-align: center;
+    }
+
+    .cta h2 {
+      max-width: 860px;
+      margin: 0 auto 18px;
+      font-size: clamp(38px, 6vw, 72px);
+      line-height: .96;
+      letter-spacing: -.075em;
+    }
+
+    .cta p {
+      color: #c7d7ee;
+      max-width: 720px;
+      margin: 0 auto 30px;
+      font-size: 18px;
+    }
+
+    .footer {
+      padding: 36px 0;
+      color: #8d9ab0;
+      background: #061024;
+      font-size: 13px;
+    }
+
+    .footer .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .floating-wa {
+      position: fixed;
+      z-index: 60;
+      right: 24px;
+      bottom: 24px;
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #06243d;
+      background: linear-gradient(135deg, #dffcf0, #9ddcff);
+      box-shadow: 0 18px 45px rgba(37, 99, 235, .24);
+      border: 1px solid rgba(255, 255, 255, .7);
+      font-size: 26px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: .65s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* KUSTOM MODAL PENDAFTARAN (NON-TAILWIND) */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(8, 22, 47, 0.6); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: .3s ease; padding: 20px;
+    }
+    .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: #fff; width: 100%; max-width: 480px; border-radius: 24px;
+      padding: 32px; position: relative; transform: translateY(20px) scale(0.95);
+      transition: .3s ease; box-shadow: 0 24px 60px rgba(0,0,0,0.15);
+    }
+    .modal-overlay.is-open .modal-box { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px; border: none; background: #f0f4f8;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer; color: #516077;
+      display: grid; place-items: center; transition: 0.2s; font-size: 18px; font-weight: bold;
+    }
+    .modal-close:hover { background: #e1e9f5; }
+    .modal-box h3 { font-size: 24px; color: var(--navy); margin-bottom: 8px; text-align: center;}
+    .modal-box p.subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; text-align: center;}
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: #3e4b63; margin-bottom: 6px; }
+    .form-group input { 
+      width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #dce4ef;
+      font-family: inherit; font-size: 14px; outline: none; transition: .2s; background: #fff;
+    }
+    .form-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .alert-box { padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 20px; display: none; text-align: center; }
+    .alert-box.success { background: #dffcf0; color: #059669; border: 1px solid #8ef0c1; display: block; }
+    .alert-box.error { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; display: block; }
+
+    @media (max-width: 1020px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .hero-grid,
+      .split,
+      .automation-grid,
+      .pos-grid,
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 136px;
+      }
+
+      .hero-visual {
+        min-height: auto;
+      }
+
+      .dashboard-card {
+        margin: 30px auto 0;
+      }
+
+      .feature-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide-card {
+        grid-column: span 1;
+      }
+
+      .price-card.featured {
+        transform: none;
+      }
+
+      .audience-grid,
+      .mini-feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .integration-card {
+        position: static;
+      }
+
+      .phone-mockup {
+        margin-inline: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(100% - 28px, var(--container));
+      }
+
+      .section {
+        padding: 78px 0;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-bottom: 70px;
+      }
+
+      .hero h1 {
+        font-size: clamp(42px, 14vw, 58px);
+      }
+
+      .hero p.lead {
+        font-size: 16px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat:nth-child(2) {
+        border-right: 0;
+      }
+
+      .dash-body {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .dash-main {
+        padding: 20px;
+      }
+
+      .metric-row,
+      .check-grid,
+      .pos-list,
+      .why-points {
+        grid-template-columns: 1fr;
+      }
+
+      .float-order,
+      .float-pos {
+        position: static;
+        margin: 14px auto 0;
+        width: 100%;
+      }
+
+      .dashboard-card {
+        border-radius: 24px;
+      }
+
+      .phone-screen {
+        min-height: auto;
+      }
+
+      .audience-grid,
+      .mini-feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .program-card {
+        padding: 34px 22px;
+        border-radius: 28px;
+      }
+
+      .price-card {
+        min-height: auto;
+      }
+
+      .footer .container {
+        display: block;
+      }
+
+      .floating-wa {
+        width: 54px;
+        height: 54px;
+        right: 16px;
+        bottom: 16px;
+      }
+      
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+
+    @media (max-width: 430px) {
+      .audience-grid,
+      .mini-feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .logo-row {
+        grid-template-columns: 1fr;
+      }
+
+      .metric strong {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <div class="container nav">
+      <a href="#" class="brand" aria-label="iMersWAstore">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 9.5C5 7.57 6.57 6 8.5 6h7C17.43 6 19 7.57 19 9.5v7c0 1.93-1.57 3.5-3.5 3.5h-7C6.57 20 5 18.43 5 16.5v-7Z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M8 6.4V5.8A3.8 3.8 0 0 1 11.8 2h.4A3.8 3.8 0 0 1 16 5.8v.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
+        iMers<span class="gradient-text">WA</span>store
+      </a>
+
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#fitur">Fitur</a>
+        <a href="#mitra">Mitra</a>
+        <a href="#pos">POS Kasir</a>
+        <a href="#harga">Harga</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="login" href="login.html">Masuk</a>
+        <a class="mini-btn" href="#" onclick="openModal(event)">Mulai Gratis</a>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Buka menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">🚀 Gratis 1 Tahun Untuk UMKM Indonesia</span>
+          <h1>Jualan Online & Offline Dalam <span class="gradient-text">Satu Platform</span></h1>
+          <p class="lead">
+            Bangun toko online profesional, kelola penjualan di toko fisik dengan POS Kasir,
+            dan otomatisasi WhatsApp dalam satu sistem yang mudah digunakan.
+          </p>
+          <p class="lead">
+            Cocok untuk UMKM, toko retail, kuliner, reseller, dan bisnis lokal yang ingin berkembang tanpa biaya mahal.
+          </p>
+
+          <div class="hero-offers" aria-label="Penawaran iMersWAstore">
+            <span class="offer-pill">🛍️ Kategori Produk</span>
+            <span class="offer-pill">🎟️ Kupon Diskon</span>
+            <span class="offer-pill">🚚 Ongkir Custom</span>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#" onclick="openModal(event)" class="btn btn-primary">Mulai Gratis Sekarang →</a>
+            <a href="#fitur" class="btn btn-secondary">Lihat Fitur</a>
+          </div>
+
+          <div class="trust">
+            <div class="avatars" aria-hidden="true">
+              <span class="avatar">UM</span>
+              <span class="avatar">RT</span>
+              <span class="avatar">CS</span>
+              <span class="avatar">+</span>
+            </div>
+            <span>Dipercaya pelaku UMKM, toko lokal, reseller, dan agency digital.</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="float-order">
+            <span class="check">✓</span>
+            <div>
+              <strong>Order Masuk!</strong>
+              <span>Checkout ke WhatsApp</span>
+            </div>
+          </div>
+
+          <div class="dashboard-card" aria-label="Dashboard iMersWAstore">
+            <div class="browser-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span>toko.imerswastore.com</span>
+            </div>
+            <div class="dash-body">
+              <aside class="sidebar">
+                <div class="menu-label">MENU</div>
+                <div class="side-item active"><span class="side-icon"></span>Dashboard</div>
+                <div class="side-item"><span class="side-icon"></span>Produk</div>
+                <div class="side-item"><span class="side-icon"></span>Order WA</div>
+                <div class="side-item"><span class="side-icon"></span>POS Kasir</div>
+              </aside>
+              <div class="dash-main">
+                <div class="dash-head">
+                  <div>
+                    <h3>Ringkasan Hari Ini</h3>
+                    <span>Senin, 26 Mei</span>
+                  </div>
+                  <div class="mini-avatar">T</div>
+                </div>
+
+                <div class="metric-row">
+                  <div class="metric">
+                    <small>Pendapatan</small>
+                    <strong>Rp 2.4M</strong>
+                  </div>
+                  <div class="metric">
+                    <small>Pesanan Baru</small>
+                    <strong>24 Order</strong>
+                  </div>
+                </div>
+
+                <div class="chart">
+                  <div class="chart-title">Statistik Penjualan</div>
+                  <div class="bars" aria-hidden="true">
+                    <span class="bar" style="height: 30%"></span>
+                    <span class="bar" style="height: 45%"></span>
+                    <span class="bar" style="height: 65%"></span>
+                    <span class="bar" style="height: 58%"></span>
+                    <span class="bar" style="height: 86%"></span>
+                    <span class="bar" style="height: 44%"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-pos">
+            <strong>POS Kasir Terintegrasi</strong>
+            <span>Online + offline dalam satu dashboard.</span>
+            <div class="cart-line"><span>Kopi Susu Aren x2</span><b>Rp 30.000</b></div>
+            <div class="cart-line"><span>Croissant x1</span><b>Rp 20.000</b></div>
+            <div class="cart-total"><span>Total</span><span>Rp 50.000</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Statistik iMersWAstore">
+      <div class="container stats-grid reveal">
+        <div class="stat"><strong>540+</strong><span>UMKM Bergabung</span></div>
+        <div class="stat"><strong>36K+</strong><span>Produk Terkelola</span></div>
+        <div class="stat"><strong>24/7</strong><span>Dukungan Sistem</span></div>
+        <div class="stat"><strong>1</strong><span>Platform Lengkap</span></div>
+      </div>
+    </section>
+
+    <section class="features section" id="fitur">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Semua Kebutuhan UMKM</span>
+          <h2>Semua Yang Dibutuhkan UMKM Dalam Satu Platform</h2>
+          <p>Tidak perlu banyak aplikasi. Tidak perlu biaya bulanan mahal. Tidak perlu sistem yang rumit.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="icon-box">🛒</div>
+            <h3>Katalog & Kategori Pintar</h3>
+            <p>Etalase produk dengan filter kategori yang rapi, varian produk lengkap, dan badge promo untuk menarik pembeli.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="icon-box">🎟️</div>
+            <h3>Kupon Diskon & Ongkir</h3>
+            <p>Manjakan pelanggan dengan fitur kode kupon (persentase/nominal) dan atur tarif ongkos kirim sesuai area dengan mudah.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="icon-box">📱</div>
+            <h3>Checkout ke WhatsApp</h3>
+            <p>Sistem menghitung Subtotal, Ongkir, dan Diskon secara otomatis sebelum pesanan dikirim ke WhatsApp bisnis Anda.</p>
+          </article>
+
+          <article class="feature-card wide-card reveal">
+            <span class="tag">FITUR UNGGULAN</span>
+            <h3>POS Kasir Modern Untuk Toko Fisik</h3>
+            <p>Gunakan iMersWAstore sebagai kasir modern untuk warung, toko, cafe, atau bisnis offline. Stok otomatis berkurang dan laporan penjualan tercatat rapi.</p>
+            <div class="pos-mini">
+              <div class="cart-line"><span>Keranjang Kasir</span><b>Rp 150.000</b></div>
+              <div class="cart-line"><span>Kopi Susu Aren x2</span><b>Rp 50.000</b></div>
+              <div class="cart-line"><span>Snack x5</span><b>Rp 100.000</b></div>
+              <div class="pay">Bayar Sekarang</div>
+            </div>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="icon-box">📊</div>
+            <h3>Laporan Penjualan</h3>
+            <p>Pantau performa bisnis dengan laporan penjualan, pelanggan, produk terlaris, dan export Excel.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION MITRA DINAMIS -->
+    <section class="mitra-section section" id="mitra">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Jelajahi Mitra</span>
+          <h2>Dipercaya Oleh Ekosistem UMKM Digital</h2>
+          <p>Ribuan brand lokal telah mempercayakan etalase digital mereka pada infrastruktur iMersWAstore.</p>
+        </div>
+
+        <div id="mitraContainer" class="mitra-grid reveal">
+            <!-- Loading Skeleton -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">
+                <p>Memuat daftar mitra...</p>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split">
+        <div class="copy-block reveal">
+          <span class="eyebrow">Toko Online Siap Jualan</span>
+          <h2>Toko Online yang Benar-Benar Membantu Jualan</h2>
+          <p>Tampilkan produk Anda dengan tampilan profesional. Pelanggan bisa melihat produk, memilih, checkout, lalu pesanan langsung masuk ke WhatsApp.</p>
+          <p>Lebih cepat. Lebih mudah. Lebih dekat dengan pelanggan.</p>
+
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span>Melihat produk</div>
+            <div class="step"><span class="step-number">2</span>Memilih produk</div>
+            <div class="step"><span class="step-number">3</span>Checkout</div>
+            <div class="step"><span class="step-number">4</span>Pesanan masuk ke WhatsApp</div>
+          </div>
+        </div>
+
+        <div class="phone-mockup reveal" aria-label="Contoh toko online mobile">
+          <div class="phone-screen">
+            <div class="phone-top">
+              <small>iMersWAstore Demo</small>
+              <h3>Katalog Produk Mobile Friendly</h3>
+            </div>
+            <div class="product-list">
+              <div class="product-item">
+                <div class="product-img"></div>
+                <div><strong>Kopi Susu Aren</strong><span>Rp 18.000</span></div>
+              </div>
+              <div class="product-item">
+                <div class="product-img"></div>
+                <div><strong>Rice Bowl Ayam</strong><span>Rp 28.000</span></div>
+              </div>
+              <div class="product-item">
+                <div class="product-img"></div>
+                <div><strong>Paket Hemat</strong><span>Rp 45.000</span></div>
+              </div>
+              <div class="product-item">
+                <div class="product-img"></div>
+                <div><strong>Brownies Box</strong><span>Rp 55.000</span></div>
+              </div>
+            </div>
+            <div class="checkout-bar">Checkout ke WhatsApp</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="automation section" id="automation">
+      <div class="container automation-grid">
+        <div class="integration-card reveal">
+          <span class="eyebrow">WhatsApp Automation</span>
+          <h3>Otomatisasi WhatsApp Untuk Bisnis yang Lebih Gesit</h3>
+          <p>Integrasi tersedia untuk Fonnte dan WaPlus. Cocok untuk toko yang ingin follow up pelanggan tanpa kerja manual terus-menerus.</p>
+          <div class="logo-row">
+            <div class="logo-pill">Fonnte</div>
+            <div class="logo-pill">WaPlus</div>
+          </div>
+        </div>
+
+        <div class="check-grid reveal">
+          <div class="check-item"><span class="check-badge">✓</span>Notifikasi Pesanan</div>
+          <div class="check-item"><span class="check-badge">✓</span>Konfirmasi Pembayaran</div>
+          <div class="check-item"><span class="check-badge">✓</span>Invoice Otomatis</div>
+          <div class="check-item"><span class="check-badge">✓</span>Update Status Pesanan</div>
+          <div class="check-item"><span class="check-badge">✓</span>Follow Up Pelanggan</div>
+          <div class="check-item"><span class="check-badge">✓</span>Broadcast Promo</div>
+          <div class="check-item"><span class="check-badge">✓</span>Pesan Pengingat</div>
+          <div class="check-item"><span class="check-badge">✓</span>Langsung melalui WhatsApp</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pos-section section" id="pos">
+      <div class="container pos-panel reveal">
+        <div class="pos-grid">
+          <div class="copy-block">
+            <span class="eyebrow">POS Kasir Untuk Toko Fisik</span>
+            <h2>Satu Sistem Untuk Toko Online dan Toko Fisik</h2>
+            <p>Punya warung, toko, cafe, atau bisnis offline? Gunakan iMersWAstore sebagai POS Kasir modern yang bisa dipakai dari HP, tablet, atau laptop.</p>
+
+            <ul class="pos-list">
+              <li>🧾 Transaksi Cepat</li>
+              <li>📱 HP, Tablet, Laptop</li>
+              <li>📦 Stok Otomatis</li>
+              <li>👥 Data Pelanggan</li>
+              <li>📊 Laporan Harian</li>
+              <li>📈 Analisa Penjualan</li>
+              <li>💳 Tunai & QRIS</li>
+              <li>🖨️ Cetak Struk Opsional</li>
+            </ul>
+          </div>
+
+          <div class="terminal" aria-label="Simulasi POS Kasir">
+            <div class="terminal-head">
+              <strong>Kasir Hari Ini</strong>
+              <span>Online</span>
+            </div>
+            <div class="terminal-body">
+              <div class="receipt-row"><span>Produk terjual</span><b>128 item</b></div>
+              <div class="receipt-row"><span>Transaksi</span><b>42 order</b></div>
+              <div class="receipt-row"><span>QRIS</span><b>Rp 1.250.000</b></div>
+              <div class="receipt-row"><span>Tunai</span><b>Rp 860.000</b></div>
+              <div class="receipt-total"><span>Total</span><span>Rp 2.110.000</span></div>
+              <div class="pay-btn">Export Laporan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Kelola Produk Lebih Mudah</span>
+          <h2>Produk, Stok, dan Inventori Lebih Rapi</h2>
+          <p>Semua data produk bisa diatur dari satu dashboard yang sederhana dan nyaman dipakai.</p>
+        </div>
+
+        <div class="mini-feature-grid reveal">
+          <div class="mini-feature">✔ Produk Unlimited</div>
+          <div class="mini-feature">✔ Kategori Produk</div>
+          <div class="mini-feature">✔ Foto Produk</div>
+          <div class="mini-feature">✔ Harga & Diskon</div>
+          <div class="mini-feature">✔ Status Stok</div>
+          <div class="mini-feature">✔ Produk Favorit</div>
+          <div class="mini-feature">✔ Produk Terlaris</div>
+          <div class="mini-feature">✔ Manajemen Inventori</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Cocok Untuk Banyak Bisnis</span>
+          <h2>Dari Warung Sampai Agency, Semua Bisa Pakai</h2>
+          <p>iMersWAstore dibuat fleksibel untuk berbagai jenis UMKM dan bisnis lokal.</p>
+        </div>
+
+        <div class="audience-grid reveal">
+          <div class="audience-card"><span>🍜</span>Rumah Makan</div>
+          <div class="audience-card"><span>☕</span>Coffee Shop</div>
+          <div class="audience-card"><span>🍰</span>Bakery</div>
+          <div class="audience-card"><span>🛒</span>Minimarket</div>
+          <div class="audience-card"><span>🏪</span>Toko Kelontong</div>
+          <div class="audience-card"><span>👗</span>Fashion</div>
+          <div class="audience-card"><span>🧕</span>Hijab</div>
+          <div class="audience-card"><span>🧴</span>Skincare</div>
+          <div class="audience-card"><span>🎁</span>Gift Shop</div>
+          <div class="audience-card"><span>🐟</span>Frozen Food</div>
+          <div class="audience-card"><span>📦</span>Reseller</div>
+          <div class="audience-card"><span>🚚</span>Dropshipper</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="umkm-program section" id="gratis">
+      <div class="container">
+        <div class="program-card reveal">
+          <span class="eyebrow">Program Khusus UMKM Indonesia</span>
+          <h2>GRATIS 1 TAHUN Untuk UMKM</h2>
+          <p>
+            Kami percaya UMKM adalah tulang punggung ekonomi Indonesia. Karena itu kami menyediakan
+            akses gratis 1 tahun untuk pelaku UMKM yang memenuhi syarat.
+          </p>
+          <p>Tanpa biaya setup. Tanpa biaya bulanan. Cukup daftar dan mulai jualan.</p>
+          <a href="#" onclick="openModal(event)" class="btn btn-primary" style="margin-top: 20px;">Daftar Gratis →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing section" id="harga">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Paket Harga</span>
+          <h2>Pilih Paket Pertumbuhan Anda</h2>
+          <p>Harga ringan untuk UMKM, reseller, freelancer, dan agency yang ingin bergerak lebih cepat.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price-card reveal">
+            <h3>Starter UMKM</h3>
+            <p class="price-desc">Gratis 1 tahun untuk mulai jualan online tanpa biaya mahal.</p>
+            <div class="price">Rp 0</div>
+            <ul class="simple-list">
+              <li>Semua Fitur Starter</li>
+              <li>POS Kasir Modern</li>
+              <li>Kupon Diskon & Ongkir</li>
+              <li>Integrasi Fonnte / WaPlus</li>
+              <li>WhatsApp Automation</li>
+              <li>Halaman Legal & ToS</li>
+              <li>Laporan Penjualan</li>
+            </ul>
+            <a href="#" onclick="openModal(event)" class="btn btn-secondary">Daftar Gratis</a>
+          </article>
+
+          <article class="price-card featured reveal">
+            <div class="popular">PALING POPULER</div>
+            <h3>Agency Lifetime</h3>
+            <p class="price-desc">Untuk reseller, freelancer, dan agency jasa pembuatan website.</p>
+            <div class="price">Rp 49.000 <span>Agency Lifetime</span></div>
+            <ul class="simple-list">
+              <li>Semua Fitur Lifetime</li>
+              <li>Unlimited User</li>
+              <li>Unlimited Toko</li>
+              <li>Unlimited Client</li>
+              <li>Bisa Dijual Kembali</li>
+              <li>Prioritas Update</li>
+              <li>Hak Kelola Banyak Bisnis</li>
+            </ul>
+            <a href="#" onclick="openModal(event)" class="btn btn-secondary" style="color:var(--navy); background:white;">Pilih Agency Lifetime</a>
+          </article>
+
+          <article class="price-card reveal">
+            <h3>Lifetime</h3>
+            <p class="price-desc">Bayar sekali, pakai selamanya untuk operasional online dan offline.</p>
+            <div class="price">Rp 29.000 <span>Lifetime</span></div>
+            <ul class="simple-list">
+              <li>Semua Fitur Starter</li>
+              <li>POS Kasir Modern</li>
+              <li>Kupon Diskon & Ongkir</li>
+              <li>Integrasi Fonnte / WaPlus</li>
+              <li>WhatsApp Automation</li>
+              <li>Halaman Legal & ToS</li>
+              <li>Laporan Penjualan</li>
+            </ul>
+            <a href="#" onclick="openModal(event)" class="btn btn-secondary">Jadi Agency</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="why section">
+      <div class="container why-grid">
+        <div class="why-card reveal">
+          <h2>Kenapa Memilih iMersWAstore?</h2>
+          <p>
+            Karena bisnis kecil tidak membutuhkan software mahal.
+            Mereka membutuhkan sistem yang mudah digunakan, terjangkau,
+            bisa dipakai dari HP, dan benar-benar membantu meningkatkan penjualan.
+          </p>
+        </div>
+
+        <div class="why-points reveal">
+          <div class="check-item"><span class="check-badge">✓</span>Mudah digunakan</div>
+          <div class="check-item"><span class="check-badge">✓</span>Harga terjangkau</div>
+          <div class="check-item"><span class="check-badge">✓</span>Bisa dipakai dari HP</div>
+          <div class="check-item"><span class="check-badge">✓</span>Membantu meningkatkan penjualan</div>
+          <div class="check-item"><span class="check-badge">✓</span>Terhubung ke WhatsApp</div>
+          <div class="check-item"><span class="check-badge">✓</span>Online dan offline dalam satu sistem</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq section" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Pertanyaan Umum</span>
+          <h2>Yang Sering Ditanyakan</h2>
+          <p>Jawaban singkat sebelum Anda mulai menggunakan iMersWAstore.</p>
+        </div>
+
+        <div class="faq-list reveal">
+          <details open>
+            <summary>Apakah harus punya website sebelumnya?</summary>
+            <p>Tidak. Anda langsung mendapatkan toko online siap pakai.</p>
+          </details>
+          <details>
+            <summary>Apakah bisa digunakan di HP?</summary>
+            <p>Bisa. Seluruh fitur dapat digunakan melalui smartphone.</p>
+          </details>
+          <details>
+            <summary>Apakah POS Kasir sudah termasuk?</summary>
+            <p>Ya, tersedia pada paket Lifetime dan Agency.</p>
+          </details>
+          <details>
+            <summary>Apakah wajib menggunakan Fonnte atau WaPlus?</summary>
+            <p>Tidak wajib, tetapi integrasi tersedia untuk kebutuhan otomatisasi WhatsApp.</p>
+          </details>
+          <details>
+            <summary>Apakah ada biaya bulanan?</summary>
+            <p>Tidak ada untuk paket Lifetime dan Agency.</p>
+          </details>
+          <details>
+            <summary>Apakah lisensi Agency bisa dijual kembali?</summary>
+            <p>Ya. Paket Agency dirancang untuk reseller, freelancer, dan agency yang ingin menjual layanan kepada banyak klien.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <div class="container reveal">
+        <span class="eyebrow">Saatnya Naik Kelas</span>
+        <h2>Jangan Hanya Bergantung Pada Marketplace</h2>
+        <p>
+          Miliki toko online sendiri, kelola pelanggan sendiri, dan jalankan jualan online serta offline
+          dalam satu sistem. iMersWAstore adalah toko online, POS Kasir, dan WhatsApp Automation untuk UMKM Indonesia.
+        </p>
+        <a href="#" onclick="openModal(event)" class="btn btn-primary">Mulai Gratis Sekarang →</a>
+      </div>
+    </section>
+  </main>
+
+  <a class="floating-wa" href="#" onclick="openModal(event)" aria-label="Mulai Daftar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 iMersWAstore. Karya Anak Bangsa untuk UMKM.</p>
+      <p>Toko Online • POS Kasir • WhatsApp Automation</p>
+    </div>
+  </footer>
+
+  <!-- MODAL PENDAFTARAN (NON-TAILWIND BIAR GAK BENTROK) -->
+  <div id="registerModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h3>Daftar iMersWAstore</h3>
+        <p class="subtitle">Mulai digitalkan UMKM Anda sekarang. Gratis 14 Hari Trial!</p>
+        
+        <div id="alertBox" class="alert-box"></div>
+        
+        <form id="googleSheetForm">
+            <input type="hidden" name="action" value="create_account">
+            <input type="hidden" name="is_self_register" value="true">
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="new_username" required placeholder="budi_store">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="new_password" required placeholder="******">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="budi@email.com">
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Nama Toko</label>
+                    <input type="text" name="nama_toko" required placeholder="Toko Berkah">
+                </div>
+                <div class="form-group">
+                    <label>Nomor WhatsApp</label>
+                    <input type="tel" name="wa_number" required placeholder="6281234...">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                <span id="btnText">Daftar & Buat Toko</span>
+            </button>
+        </form>
+    </div>
+  </div>
+
+  <script>
+    const topbar = document.getElementById('topbar');
+
+    function handleScroll() {
+      topbar.classList.toggle('is-scrolled', window.scrollY > 20);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    // ==========================================
+    // LOGIKA MODAL PENDAFTARAN
+    // ==========================================
+    const modal = document.getElementById('registerModal');
+    
+    function openModal(e) {
+        if(e) e.preventDefault();
+        document.getElementById('alertBox').style.display = 'none'; 
+        modal.classList.add('is-open');
+    }
+
+    function closeModal(e) {
+        if(e && e.target !== modal) return;
+        modal.classList.remove('is-open');
+    }
+
+    function showAlert(msg, isSuccess) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.innerText = msg;
+        alertBox.className = `alert-box ${isSuccess ? 'success' : 'error'}`;
+    }
+
+    // ==========================================
+    // FETCH DATA MITRA DINAMIS
+    // ==========================================
+    const scriptURL = SETTING_SCRIPT_URL; // Gunakan URL dari atas
+    
+    async function loadMitra() {
+        const container = document.getElementById('mitraContainer');
+        try {
+            let fd = new FormData();
+            fd.append('action', 'get_public_stores'); 
+            
+            const response = await fetch(scriptURL, { method: 'POST', body: fd });
+            const res = await response.json();
+            
+            if (res.success && res.data.length > 0) {
+                container.innerHTML = res.data.map(toko => {
+                    const logoHtml = toko.logo 
+                        ? `<img src="${toko.logo}" alt="Logo">` 
+                        : toko.nama.charAt(0).toUpperCase();
+                    
+                    return `
+                    <div class="mitra-card">
+                        <div class="mitra-logo">${logoHtml}</div>
+                        <h4 class="mitra-name">${toko.nama}</h4>
+                        <div class="mitra-badge">✓ Toko Online Aktif</div>
+                        <a href="/${toko.slug}" class="mitra-link">Kunjungi Toko</a>
+                    </div>
+                    `;
+                }).join('');
+            } else {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Belum ada mitra yang bergabung.</div>`;
+            }
+        } catch (error) {
+            console.error("Gagal memuat mitra:", error);
+            container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Gagal memuat daftar mitra.</div>`;
+        }
+    }
+
+    // Jalankan fetch saat halaman selesai dimuat
+    document.addEventListener("DOMContentLoaded", () => {
+        loadMitra();
+        
+        // Auto-open modal jika dari halaman login mengklik "Daftar Gratis"
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('register') === 'true') {
+            setTimeout(() => openModal(), 300);
+        }
+    });
+
+    // ==========================================
+    // SUBMIT FORM PENDAFTARAN
+    // ==========================================
+    const form = document.getElementById('googleSheetForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+
+    if (form) {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            btnText.textContent = 'Memproses pendaftaran...';
+            submitBtn.style.opacity = '0.75';
+            submitBtn.style.pointerEvents = 'none';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => response.json()) 
+                .then(res => {
+                    btnText.textContent = 'Daftar & Buat Toko';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.pointerEvents = 'auto';
+                    
+                    if (res.success) {
+                        showAlert("Berhasil! Akun Anda sudah terdaftar dengan masa aktif 14 hari.", true);
+                        form.reset();
+                        
+                        setTimeout(() => {
+                            closeModal();
+                            window.location.href = 'login.html';
+                        }, 3000);
+                    } else {
+                        showAlert(res.message, false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error!', error);
+                    btnText.textContent = 'Daftar & Buat Toko';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.pointerEvents = 'auto';
+                    showAlert('Koneksi ke server gagal. Coba lagi.', false);
+                });
+        });
+    }
+  </script>
+</body>
+</html>
