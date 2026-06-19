@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mitra & Klien iMersWAstore</title>
+  <meta name="description" content="Jelajahi ribuan toko online dan UMKM yang telah mempercayakan bisnis digital mereka menggunakan iMersWAstore." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'] },
+          colors: {
+            ink: '#08162f',
+            soft: '#f6f9fd',
+            brand: {
+              blue: '#2563eb',
+              cyan: '#06b6d4',
+              mint: '#7ee6b8',
+              navy: '#08162f',
+              sky: '#dff6ff',
+              green: '#dffcf0'
+            }
+          },
+          boxShadow: {
+            glow: '0 22px 70px rgba(37,99,235,.18)',
+            soft: '0 16px 44px rgba(15,44,89,.09)',
+            card: '0 20px 60px rgba(8,22,47,.12)'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    :root { --blue: #2563eb; --cyan: #06b6d4; --mint: #7ee6b8; --navy: #08162f; }
+    * { -webkit-tap-highlight-color: transparent; }
+    body { overflow-x: hidden; }
+    @media(max-width: 767px) { body { padding-bottom: 94px; } }
+    .glass-nav { background: rgba(255,255,255,.84); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(226,232,240,.72); }
+    .text-gradient { background: linear-gradient(110deg, var(--blue), var(--cyan) 52%, #31c48d); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .bg-mesh { background: radial-gradient(circle at 8% 12%, rgba(126,230,184,.42), transparent 25%), radial-gradient(circle at 85% 5%, rgba(37,99,235,.17), transparent 24%), radial-gradient(circle at 86% 48%, rgba(6,182,212,.13), transparent 27%), linear-gradient(180deg, #fbfeff 0%, #f4fbff 55%, #fff 100%); }
+    .btn-gradient { background: linear-gradient(135deg, var(--blue), var(--cyan) 52%, var(--mint)); box-shadow: 0 18px 44px rgba(37,99,235,.28); }
+    .btn-gradient:hover { box-shadow: 0 22px 54px rgba(37,99,235,.36); }
+    .mobile-bottom-nav { box-shadow: 0 20px 70px rgba(8,22,47,.22); }
+    
+    .mitra-section { background: #fff; min-height: 80vh; padding-top: 140px; padding-bottom: 80px; }
+    .mitra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+    .mitra-card { background: var(--soft); border: 1px solid #edf2f8; border-radius: 24px; padding: 24px; text-align: center; transition: .25s ease; box-shadow: 0 10px 25px rgba(15, 44, 89, .03); }
+    .mitra-card:hover { transform: translateY(-5px); box-shadow: 0 14px 35px rgba(15, 44, 89, .08); border-color: #dbeafe; }
+    .mitra-logo { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), #22d3ee); color: #fff; display: grid; place-items: center; font-size: 24px; font-weight: 900; overflow: hidden; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .mitra-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .mitra-name { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mitra-badge { color: #059669; font-size: 12px; font-weight: 700; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 4px; background: #d1fae5; padding: 4px 10px; border-radius: 99px; }
+    .mitra-link { display: block; padding: 10px; border-radius: 12px; background: #fff; color: var(--blue); font-weight: 800; font-size: 14px; transition: .2s; border: 1px solid #dce4ef;}
+    .mitra-link:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* Modal Form Registration (sama dengan index) */
+    .modal-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(8, 22, 47, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: .3s ease; padding: 20px; }
+    .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .modal-box { background: #fff; width: 100%; max-width: 480px; border-radius: 24px; padding: 32px; position: relative; transform: translateY(20px) scale(0.95); transition: .3s ease; box-shadow: 0 24px 60px rgba(0,0,0,0.15); }
+    .modal-overlay.is-open .modal-box { transform: translateY(0) scale(1); }
+    .modal-close { position: absolute; top: 16px; right: 16px; border: none; background: #f0f4f8; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; color: #516077; display: grid; place-items: center; transition: 0.2s; font-size: 18px; font-weight: bold; }
+    .modal-close:hover { background: #e1e9f5; }
+    .modal-box h3 { font-size: 24px; color: var(--navy); margin-bottom: 8px; text-align: center; font-family: 'Montserrat', sans-serif;}
+    .modal-box p.subtitle { color: #65728a; font-size: 14px; margin-bottom: 24px; text-align: center;}
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: #3e4b63; margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #dce4ef; font-family: inherit; font-size: 14px; outline: none; transition: .2s; background: #fff; }
+    .form-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .alert-box { padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 20px; display: none; text-align: center; }
+    .alert-box.success { background: #dffcf0; color: #059669; border: 1px solid #8ef0c1; display: block; }
+    .alert-box.error { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; display: block; }
+
+    /* CSS Mobile Menu */
+    .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding: 20px; box-shadow: var(--shadow-soft); z-index: 49; }
+    .mobile-menu.is-open { display: block; }
+    .mobile-nav { display: flex; flex-direction: column; gap: 15px; }
+    .mobile-nav a { font-weight: 700; color: var(--navy); text-align: center; padding: 12px; border-radius: 12px; background: var(--soft); border: 1px solid var(--line); }
+    .mobile-nav a.mini-btn { background: linear-gradient(135deg, var(--blue), #24c6dc, #6ee7b7); color: white; border: none; }
+    @media (max-width: 1020px) { .nav-links, .nav-actions { display: none; } .mobile-toggle { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: 24px; cursor: pointer;} .grid-2 { grid-template-columns: 1fr; gap: 0; } }
+  </style>
+
+  <script>
+    const SETTING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5b-MqpGYCHgQzQtQrf2lIOoWs71CAARJBnRL4ALiJwxI5jbkNJ680zzXgv-KWWRES/exec';
+  </script>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased selection:bg-brand-green selection:text-brand-navy bg-mesh">
+  
+  <!-- NAVBAR (Link mengarah kembali ke index.html) -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300 shadow-soft" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl btn-gradient flex items-center justify-center text-white shadow-glow"><i data-lucide="store" class="w-5 h-5"></i></div>
+          <span class="font-black text-xl tracking-tight text-brand-navy">iMers<span class="text-gradient">WA</span>store</span>
+        </a>
+        <nav class="hidden lg:flex items-center gap-8">
+          <a href="index.html#keunggulan" class="text-sm font-bold text-slate-600 hover:text-brand-blue transition-colors">Keunggulan</a>
+          <a href="index.html#fitur" class="text-sm font-bold text-slate-600 hover:text-brand-blue transition-colors">Fitur</a>
+          <a href="#" class="text-sm font-bold text-brand-blue transition-colors">Mitra Kami</a>
+          <a href="index.html#demo" class="text-sm font-bold text-slate-600 hover:text-brand-blue transition-colors">Demo</a>
+          <a href="index.html#harga" class="text-sm font-bold text-slate-600 hover:text-brand-blue transition-colors">Harga</a>
+          <a href="index.html#faq" class="text-sm font-bold text-slate-600 hover:text-brand-blue transition-colors">FAQ</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-3">
+          <a href="login.html" class="inline-flex items-center justify-center h-11 px-5 rounded-2xl bg-white border border-slate-200 text-sm font-extrabold text-slate-700 hover:border-brand-blue hover:text-brand-blue transition-all shadow-sm">Masuk</a>
+          <a href="#" onclick="openModal(event)" class="inline-flex items-center justify-center h-11 px-5 rounded-2xl btn-gradient text-sm font-extrabold text-white hover:-translate-y-0.5 transition-all">Mulai Gratis</a>
+        </div>
+        <button class="mobile-toggle lg:hidden" aria-label="Buka menu">☰</button>
+      </div>
+    </div>
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="mobile-menu">
+      <nav class="mobile-nav">
+        <a href="index.html#fitur">Fitur</a>
+        <a href="#">Mitra Kami</a>
+        <a href="index.html#pos">POS Kasir</a>
+        <a href="index.html#harga">Harga</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="login.html" style="background: white;">Masuk Admin</a>
+        <a href="#" onclick="openModal(event)" class="mini-btn">Mulai Gratis Sekarang</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="mitra-section relative z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green text-brand-navy text-xs font-black uppercase tracking-wider mb-5">Direktori Klien</span>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black font-display text-brand-navy tracking-[-0.035em] leading-[1.16] mb-5">
+            Dipercaya Oleh Ratusan <span class="text-gradient">Ekosistem UMKM</span>
+          </h1>
+          <p class="text-slate-600 text-lg leading-relaxed">Jelajahi toko-toko online yang telah sukses melakukan transformasi digital menggunakan infrastruktur iMersWAstore.</p>
+        </div>
+
+        <div id="mitraContainer" class="mitra-grid">
+            <!-- Loading Skeleton -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #65728a;">
+                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-3 text-brand-blue"></i>
+                <p class="font-bold">Memuat direktori mitra...</p>
+            </div>
+        </div>
+
+        <!-- Tombol Load More -->
+        <div id="loadMoreContainer" class="text-center mt-14">
+            <button id="loadMoreMitraBtn" onclick="loadMoreMitra()" class="hidden inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-white border border-slate-200 text-sm font-extrabold text-slate-700 hover:border-brand-blue hover:text-brand-blue hover:shadow-soft transition-all">
+                Tampilkan Lebih Banyak <i data-lucide="chevron-down" class="w-5 h-5 ml-2"></i>
+            </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#061024] pt-12 pb-10 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-2xl btn-gradient flex items-center justify-center text-white"><i data-lucide="store" class="w-4 h-4"></i></div>
+          <span class="font-black tracking-tight text-white text-lg">iMers<span class="text-brand-mint">WA</span>store</span>
+        </div>
+        <p class="text-slate-500 text-sm">© 2026 iMersWAstore. Platform Ekosistem Digital UMKM.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <nav class="md:hidden fixed bottom-4 left-4 right-4 z-[80] mobile-bottom-nav rounded-[1.7rem] bg-white/92 border border-white backdrop-blur-xl px-2 py-2">
+    <div class="grid grid-cols-4 gap-1">
+      <a href="index.html" class="flex flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-slate-500 font-black text-[11px]"><i data-lucide="home" class="w-5 h-5"></i>Home</a>
+      <a href="index.html#fitur" class="flex flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-slate-500 font-black text-[11px]"><i data-lucide="sparkles" class="w-5 h-5"></i>Fitur</a>
+      <a href="#" class="flex flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-brand-blue font-black text-[11px]"><i data-lucide="users" class="w-5 h-5"></i>Mitra</a>
+      <a href="index.html#harga" class="flex flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-white font-black text-[11px] btn-gradient"><i data-lucide="shopping-cart" class="w-5 h-5"></i>Beli</a>
+    </div>
+  </nav>
+
+  <!-- MODAL PENDAFTARAN -->
+  <div id="registerModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h3>Daftar iMersWAstore</h3>
+        <p class="subtitle">Mulai digitalkan UMKM Anda sekarang. Gratis 14 Hari Trial!</p>
+        <div id="alertBox" class="alert-box"></div>
+        <form id="googleSheetForm">
+            <input type="hidden" name="action" value="create_account">
+            <input type="hidden" name="is_self_register" value="true">
+            <div class="grid-2">
+                <div class="form-group"><label>Username</label><input type="text" name="new_username" required placeholder="budi_store"></div>
+                <div class="form-group"><label>Password</label><input type="password" name="new_password" required placeholder="******"></div>
+            </div>
+            <div class="form-group"><label>Email</label><input type="email" name="email" required placeholder="budi@email.com"></div>
+            <div class="grid-2">
+                <div class="form-group"><label>Nama Toko</label><input type="text" name="nama_toko" required placeholder="Toko Berkah"></div>
+                <div class="form-group"><label>Nomor WhatsApp</label><input type="tel" name="wa_number" required placeholder="6281234..."></div>
+            </div>
+            <button type="submit" id="submitBtn" class="inline-flex items-center justify-center h-12 rounded-xl btn-gradient text-white font-black w-full mt-2 transition-transform hover:-translate-y-1"><span id="btnText">Daftar & Buat Toko</span></button>
+        </form>
+    </div>
+  </div>
+
+  <script>    
+    lucide.createIcons();    
+    
+    // Logika Burger Menu
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if(mobileToggle && mobileMenu) {
+      mobileToggle.addEventListener('click', () => { mobileMenu.classList.toggle('is-open'); });
+      mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.remove('is-open'); }); });
+    }
+
+    // Logika Modal
+    const modal = document.getElementById('registerModal');
+    function openModal(e) { if(e) e.preventDefault(); document.getElementById('alertBox').style.display = 'none'; modal.classList.add('is-open'); }
+    function closeModal(e) { if(e && e.target !== modal) return; modal.classList.remove('is-open'); }
+    function showAlert(msg, isSuccess) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.innerText = msg;
+        alertBox.className = `alert-box ${isSuccess ? 'success' : 'error'}`;
+    }
+
+    // ==========================================
+    // FETCH DATA MITRA DINAMIS (PAGE KHUSUS MITRA)
+    // ==========================================
+    let allMitraData = [];
+    let mitraDisplayed = 20; // Langsung tampilkan 20 toko di page ini
+    
+    async function loadMitra() {
+        const container = document.getElementById('mitraContainer');
+        try {
+            let fd = new FormData();
+            fd.append('action', 'get_public_stores'); 
+            const response = await fetch(SETTING_SCRIPT_URL, { method: 'POST', body: fd });
+            const res = await response.json();
+            
+            if (res.success && res.data.length > 0) {
+                allMitraData = res.data;
+                renderMitra();
+            } else {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #65728a; font-weight:bold;">Belum ada mitra yang bergabung.</div>`;
+            }
+        } catch (error) {
+            console.error("Gagal memuat mitra:", error);
+            container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #dc2626; font-weight:bold;">Gagal terhubung ke server. Silakan muat ulang halaman.</div>`;
+        }
+    }
+
+    function renderMitra() {
+        const container = document.getElementById('mitraContainer');
+        const loadMoreBtn = document.getElementById('loadMoreMitraBtn');
+        const toDisplay = allMitraData.slice(0, mitraDisplayed);
+        
+        container.innerHTML = toDisplay.map(toko => {
+            const logoHtml = toko.logo ? `<img src="${toko.logo}" alt="Logo">` : toko.nama.charAt(0).toUpperCase();
+            return `
+            <div class="mitra-card">
+                <div class="mitra-logo">${logoHtml}</div>
+                <h4 class="mitra-name">${toko.nama}</h4>
+                <div class="mitra-badge">✓ Toko Online Aktif</div>
+                <a href="/${toko.slug}" target="_blank" class="mitra-link">Kunjungi Toko</a>
+            </div>
+            `;
+        }).join('');
+
+        if (allMitraData.length > mitraDisplayed) {
+            loadMoreBtn.classList.remove('hidden');
+        } else {
+            loadMoreBtn.classList.add('hidden');
+        }
+    }
+
+    function loadMoreMitra() {
+        mitraDisplayed += 20; // Tambah 20 lagi kalau diklik
+        renderMitra();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => { loadMitra(); });
+
+    // SUBMIT FORM PENDAFTARAN
+    const form = document.getElementById('googleSheetForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+
+    if (form) {
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            btnText.textContent = 'Memproses...';
+            submitBtn.style.opacity = '0.75';
+            submitBtn.style.pointerEvents = 'none';
+
+            fetch(SETTING_SCRIPT_URL, { method: 'POST', body: new FormData(form)})
+                .then(response => response.json()) 
+                .then(res => {
+                    btnText.textContent = 'Daftar & Buat Toko';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.pointerEvents = 'auto';
+                    if (res.success) {
+                        showAlert("Berhasil! Akun Anda sudah terdaftar dengan masa aktif 14 hari.", true);
+                        form.reset();
+                        setTimeout(() => { closeModal(); window.location.href = 'login.html'; }, 3000);
+                    } else {
+                        showAlert(res.message, false);
+                    }
+                })
+                .catch(error => {
+                    btnText.textContent = 'Daftar & Buat Toko';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.pointerEvents = 'auto';
+                    showAlert('Koneksi ke server gagal. Coba lagi.', false);
+                });
+        });
+    }
+  </script>
+</body>
+</html>
