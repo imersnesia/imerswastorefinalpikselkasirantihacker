@@ -218,11 +218,6 @@
       color: #3e4b63;
       font-weight: 800;
       font-size: 14px;
-      padding: 10px 16px;
-    }
-    
-    .nav-actions .login:hover {
-      color: var(--blue);
     }
 
     .nav-actions .mini-btn {
@@ -232,10 +227,6 @@
       font-weight: 900;
       background: linear-gradient(135deg, var(--blue), #24c6dc, #6ee7b7);
       font-size: 13px;
-      transition: transform 0.2s;
-    }
-    .nav-actions .mini-btn:hover {
-      transform: translateY(-2px);
     }
 
     .mobile-toggle {
@@ -248,6 +239,43 @@
       color: var(--ink);
       font-size: 24px;
       cursor: pointer;
+    }
+
+    /* CSS MOBILE MENU BARU */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      z-index: 49;
+    }
+    .mobile-menu.is-open {
+      display: block;
+    }
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .mobile-nav a {
+      font-weight: 700;
+      color: var(--navy);
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+    .mobile-nav a.mini-btn {
+      background: linear-gradient(135deg, var(--blue), #24c6dc, #6ee7b7);
+      color: white;
+      border: none;
     }
 
     .hero {
@@ -1737,6 +1765,19 @@
 
       <button class="mobile-toggle" aria-label="Buka menu">☰</button>
     </div>
+
+    <!-- MOBILE MENU CONTAINER -->
+    <div id="mobileMenu" class="mobile-menu">
+      <nav class="mobile-nav">
+        <a href="#fitur">Fitur</a>
+        <a href="#mitra">Mitra</a>
+        <a href="#pos">POS Kasir</a>
+        <a href="#harga">Harga</a>
+        <a href="#faq">FAQ</a>
+        <a href="login.html">Masuk Admin</a>
+        <a href="#" onclick="openModal(event)" class="mini-btn">Mulai Gratis Sekarang</a>
+      </nav>
+    </div>
   </header>
 
   <main>
@@ -1902,7 +1943,7 @@
       </div>
     </section>
 
-    <!-- SECTION MITRA DINAMIS -->
+    <!-- SECTION MITRA DINAMIS (TEASER 8 TOKO) -->
     <section class="mitra-section section" id="mitra">
       <div class="container">
         <div class="section-head reveal">
@@ -1916,6 +1957,13 @@
             <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">
                 <p>Memuat daftar mitra...</p>
             </div>
+        </div>
+
+        <!-- Tombol Link Pindah ke Halaman Mitra -->
+        <div id="loadMoreContainer" style="display: none; text-align: center; margin-top: 40px;" class="reveal">
+            <a href="mitra.html" class="btn btn-secondary" style="border-radius: 99px; padding: 0 30px;">
+                Lihat Semua Mitra Kami →
+            </a>
         </div>
       </div>
     </section>
@@ -2305,6 +2353,25 @@
     handleScroll();
 
     // ==========================================
+    // LOGIKA BURGER MENU HP (BARU)
+    // ==========================================
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if(mobileToggle && mobileMenu) {
+      mobileToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('is-open');
+      });
+
+      // Tutup menu kalau salah satu link diklik
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('is-open');
+        });
+      });
+    }
+
+    // ==========================================
     // LOGIKA MODAL PENDAFTARAN
     // ==========================================
     const modal = document.getElementById('registerModal');
@@ -2327,9 +2394,10 @@
     }
 
     // ==========================================
-    // FETCH DATA MITRA DINAMIS
+    // FETCH DATA MITRA DINAMIS (TEASER 8 TOKO)
     // ==========================================
     const scriptURL = SETTING_SCRIPT_URL; // Gunakan URL dari atas
+    let allMitraData = [];
     
     async function loadMitra() {
         const container = document.getElementById('mitraContainer');
@@ -2341,26 +2409,42 @@
             const res = await response.json();
             
             if (res.success && res.data.length > 0) {
-                container.innerHTML = res.data.map(toko => {
-                    const logoHtml = toko.logo 
-                        ? `<img src="${toko.logo}" alt="Logo">` 
-                        : toko.nama.charAt(0).toUpperCase();
-                    
-                    return `
-                    <div class="mitra-card">
-                        <div class="mitra-logo">${logoHtml}</div>
-                        <h4 class="mitra-name">${toko.nama}</h4>
-                        <div class="mitra-badge">✓ Toko Online Aktif</div>
-                        <a href="/${toko.slug}" class="mitra-link">Kunjungi Toko</a>
-                    </div>
-                    `;
-                }).join('');
+                allMitraData = res.data;
+                renderMitraTeaser();
             } else {
                 container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Belum ada mitra yang bergabung.</div>`;
             }
         } catch (error) {
             console.error("Gagal memuat mitra:", error);
             container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Gagal memuat daftar mitra.</div>`;
+        }
+    }
+
+    function renderMitraTeaser() {
+        const container = document.getElementById('mitraContainer');
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        
+        // Ambil maksimal 8 data untuk teaser
+        const toDisplay = allMitraData.slice(0, 8);
+        
+        container.innerHTML = toDisplay.map(toko => {
+            const logoHtml = toko.logo 
+                ? `<img src="${toko.logo}" alt="Logo">` 
+                : toko.nama.charAt(0).toUpperCase();
+            
+            return `
+            <div class="mitra-card">
+                <div class="mitra-logo">${logoHtml}</div>
+                <h4 class="mitra-name">${toko.nama}</h4>
+                <div class="mitra-badge">✓ Toko Online Aktif</div>
+                <a href="/${toko.slug}" target="_blank" class="mitra-link">Kunjungi Toko</a>
+            </div>
+            `;
+        }).join('');
+
+        // Tampilkan tombol ke halaman mitra.html jika toko lebih dari 8
+        if (allMitraData.length > 8) {
+            loadMoreContainer.style.display = 'block';
         }
     }
 
