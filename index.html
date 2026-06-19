@@ -705,19 +705,19 @@
     }
 
     .mitra-card {
-      background: var(--soft);
-      border: 1px solid #edf2f8;
+      background: linear-gradient(var(--soft), var(--soft)) padding-box,
+                  linear-gradient(135deg, var(--blue), var(--cyan) 52%, var(--mint)) border-box;
+      border: 2px solid transparent;
       border-radius: var(--radius-lg);
       padding: 24px;
       text-align: center;
-      transition: .25s ease;
-      box-shadow: 0 10px 25px rgba(15, 44, 89, .03);
+      transition: all .3s ease;
+      box-shadow: 0 10px 25px rgba(15, 44, 89, .04);
     }
 
     .mitra-card:hover { 
-      transform: translateY(-5px); 
-      box-shadow: 0 14px 35px rgba(15, 44, 89, .08); 
-      border-color: #dbeafe;
+      transform: translateY(-6px); 
+      box-shadow: 0 16px 40px rgba(37, 99, 235, .15); 
     }
 
     .mitra-logo {
@@ -727,10 +727,27 @@
       overflow: hidden; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .mitra-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .mitra-name { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mitra-name { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Montserrat', sans-serif;}
     .mitra-badge { color: #059669; font-size: 12px; font-weight: 700; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 4px; background: #d1fae5; padding: 4px 10px; border-radius: 99px; }
-    .mitra-link { display: block; padding: 10px; border-radius: 12px; background: #fff; color: var(--blue); font-weight: 800; font-size: 14px; transition: .2s; border: 1px solid #dce4ef;}
-    .mitra-link:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    
+    .mitra-link { 
+      display: block; 
+      padding: 10px; 
+      border-radius: 12px; 
+      background: #fff; 
+      color: var(--blue); 
+      font-weight: 800; 
+      font-size: 14px; 
+      transition: all .3s ease; 
+      border: 1px solid #dce4ef;
+    }
+    .mitra-link:hover { 
+      background: linear-gradient(135deg, var(--blue), var(--cyan) 52%, var(--mint));
+      color: #fff; 
+      border-color: transparent; 
+      box-shadow: 0 8px 20px rgba(37, 99, 235, .25);
+      transform: translateY(-2px);
+    }
 
     .features {
       background: var(--soft);
@@ -1006,20 +1023,27 @@
 
     .logo-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
     .logo-pill {
-      min-height: 88px;
-      display: grid;
-      place-items: center;
-      border-radius: 20px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
       color: #e9fbff;
-      font-size: 22px;
-      font-weight: 900;
+      font-size: 17px;
+      font-weight: 800;
       background: rgba(255, 255, 255, .08);
       border: 1px solid rgba(255, 255, 255, .14);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .logo-pill:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .check-grid {
@@ -1550,7 +1574,7 @@
       display: grid; place-items: center; transition: 0.2s; font-size: 18px; font-weight: bold;
     }
     .modal-close:hover { background: #e1e9f5; }
-    .modal-box h3 { font-size: 24px; color: var(--navy); margin-bottom: 8px; text-align: center;}
+    .modal-box h3 { font-size: 24px; color: var(--navy); margin-bottom: 8px; text-align: center; font-family: 'Montserrat', sans-serif;}
     .modal-box p.subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; text-align: center;}
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { display: block; font-size: 13px; font-weight: 700; color: #3e4b63; margin-bottom: 6px; }
@@ -1566,171 +1590,48 @@
 
     @media (max-width: 1020px) {
       .nav-links,
-      .nav-actions {
-        display: none;
-      }
-
-      .mobile-toggle {
-        display: inline-grid;
-        place-items: center;
-      }
-
-      .hero-grid,
-      .split,
-      .automation-grid,
-      .pos-grid,
-      .why-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 136px;
-      }
-
-      .hero-visual {
-        min-height: auto;
-      }
-
-      .dashboard-card {
-        margin: 30px auto 0;
-      }
-
-      .feature-grid,
-      .pricing-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .wide-card {
-        grid-column: span 1;
-      }
-
-      .price-card.featured {
-        transform: none;
-      }
-
-      .audience-grid,
-      .mini-feature-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .integration-card {
-        position: static;
-      }
-
-      .phone-mockup {
-        margin-inline: auto;
-      }
+      .nav-actions { display: none; }
+      .mobile-toggle { display: inline-grid; place-items: center; }
+      .hero-grid, .split, .automation-grid, .pos-grid, .why-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 136px; }
+      .hero-visual { min-height: auto; }
+      .dashboard-card { margin: 30px auto 0; }
+      .feature-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .wide-card { grid-column: span 1; }
+      .price-card.featured { transform: none; }
+      .audience-grid, .mini-feature-grid { grid-template-columns: repeat(3, 1fr); }
+      .integration-card { position: static; }
+      .phone-mockup { margin-inline: auto; }
     }
 
     @media (max-width: 720px) {
-      .container {
-        width: min(100% - 28px, var(--container));
-      }
-
-      .section {
-        padding: 78px 0;
-      }
-
-      .hero {
-        min-height: auto;
-        padding-bottom: 70px;
-      }
-
-      .hero h1 {
-        font-size: clamp(42px, 14vw, 58px);
-      }
-
-      .hero p.lead {
-        font-size: 16px;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .stat:nth-child(2) {
-        border-right: 0;
-      }
-
-      .dash-body {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        display: none;
-      }
-
-      .dash-main {
-        padding: 20px;
-      }
-
-      .metric-row,
-      .check-grid,
-      .pos-list,
-      .why-points {
-        grid-template-columns: 1fr;
-      }
-
-      .float-order,
-      .float-pos {
-        position: static;
-        margin: 14px auto 0;
-        width: 100%;
-      }
-
-      .dashboard-card {
-        border-radius: 24px;
-      }
-
-      .phone-screen {
-        min-height: auto;
-      }
-
-      .audience-grid,
-      .mini-feature-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .program-card {
-        padding: 34px 22px;
-        border-radius: 28px;
-      }
-
-      .price-card {
-        min-height: auto;
-      }
-
-      .footer .container {
-        display: block;
-      }
-
-      .floating-wa {
-        width: 54px;
-        height: 54px;
-        right: 16px;
-        bottom: 16px;
-      }
-      
+      .container { width: min(100% - 28px, var(--container)); }
+      .section { padding: 78px 0; }
+      .hero { min-height: auto; padding-bottom: 70px; }
+      .hero h1 { font-size: clamp(42px, 14vw, 58px); }
+      .hero p.lead { font-size: 16px; }
+      .hero-actions .btn { width: 100%; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: 0; }
+      .dash-body { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .dash-main { padding: 20px; }
+      .metric-row, .check-grid, .pos-list, .why-points { grid-template-columns: 1fr; }
+      .float-order, .float-pos { position: static; margin: 14px auto 0; width: 100%; }
+      .dashboard-card { border-radius: 24px; }
+      .phone-screen { min-height: auto; }
+      .audience-grid, .mini-feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .program-card { padding: 34px 22px; border-radius: 28px; }
+      .price-card { min-height: auto; }
+      .footer .container { display: block; }
+      .floating-wa { width: 54px; height: 54px; right: 16px; bottom: 16px; }
       .grid-2 { grid-template-columns: 1fr; gap: 0; }
     }
 
     @media (max-width: 430px) {
-      .audience-grid,
-      .mini-feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .logo-row {
-        grid-template-columns: 1fr;
-      }
-
-      .metric strong {
-        font-size: 18px;
-      }
+      .audience-grid, .mini-feature-grid { grid-template-columns: 1fr; }
+      .logo-row { grid-template-columns: 1fr; }
+      .metric strong { font-size: 18px; }
     }
   </style>
 </head>
@@ -2027,23 +1928,25 @@
     <section class="automation section" id="automation">
       <div class="container automation-grid">
         <div class="integration-card reveal">
-          <span class="eyebrow">WhatsApp Automation</span>
-          <h3>Otomatisasi WhatsApp Untuk Bisnis yang Lebih Gesit</h3>
-          <p>Integrasi tersedia untuk Fonnte dan WaPlus. Cocok untuk toko yang ingin follow up pelanggan tanpa kerja manual terus-menerus.</p>
-          <div class="logo-row">
-            <div class="logo-pill">Fonnte</div>
-            <div class="logo-pill">WaPlus</div>
+          <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-900/40 text-blue-200 border border-blue-500/30 text-xs font-bold mb-4">Order WhatsApp</span>
+          <h3 style="font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.04em;">Order Masuk Langsung ke WhatsApp Seller</h3>
+          <p>Setiap pesanan bisa diarahkan ke WhatsApp toko Anda. Untuk kebutuhan lanjutan, integrasi multi-gateway tersedia agar pengiriman struk dan nota lebih praktis.</p>
+          <div class="logo-row" style="grid-template-columns: repeat(2, 1fr);">
+            <a href="#" class="logo-pill hover:bg-white/20 transition-all text-white no-underline" style="font-size: 17px; min-height: 70px;">Fonnte</a>
+            <a href="#" class="logo-pill hover:bg-white/20 transition-all text-white no-underline" style="font-size: 17px; min-height: 70px;">WaPlus</a>
+            <a href="#" class="logo-pill hover:bg-white/20 transition-all text-white no-underline" style="font-size: 17px; min-height: 70px;">StarSender</a>
+            <a href="#" class="logo-pill hover:bg-white/20 transition-all text-white no-underline" style="font-size: 17px; min-height: 70px;">Xsender</a>
           </div>
         </div>
 
         <div class="check-grid reveal">
-          <div class="check-item"><span class="check-badge">✓</span>Notifikasi Pesanan</div>
-          <div class="check-item"><span class="check-badge">✓</span>Konfirmasi Pembayaran</div>
-          <div class="check-item"><span class="check-badge">✓</span>Invoice Otomatis</div>
-          <div class="check-item"><span class="check-badge">✓</span>Update Status Pesanan</div>
-          <div class="check-item"><span class="check-badge">✓</span>Follow Up Pelanggan</div>
-          <div class="check-item"><span class="check-badge">✓</span>Broadcast Promo</div>
-          <div class="check-item"><span class="check-badge">✓</span>Pesan Pengingat</div>
+          <div class="check-item"><span class="check-badge">✓</span>Notifikasi Pesanan Masuk</div>
+          <div class="check-item"><span class="check-badge">✓</span>Invoice & Struk Otomatis</div>
+          <div class="check-item"><span class="check-badge">✓</span>Pesan Sambutan Toko Baru</div>
+          <div class="check-item"><span class="check-badge">✓</span>Notifikasi Kasir POS Offline</div>
+          <div class="check-item"><span class="check-badge">✓</span>Kustom Teks & Tag Dinamis</div>
+          <div class="check-item"><span class="check-badge">✓</span>Tautan Lupa Password OTP</div>
+          <div class="check-item"><span class="check-badge">✓</span>Multi-Provider Gateway</div>
           <div class="check-item"><span class="check-badge">✓</span>Langsung melalui WhatsApp</div>
         </div>
       </div>
